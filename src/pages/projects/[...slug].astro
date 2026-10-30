@@ -1,0 +1,74 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatDate } from "../../lib/content";
+import { absoluteSiteUrl, withBase } from "../../lib/urls";
+
+export async function getStaticPaths() {
+	const projects = await getCollection("projects");
+
+	return projects.map((project) => ({
+		params: { slug: project.id },
+		props: { project },
+	}));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const canonicalUrl = Astro.site
+	? absoluteSiteUrl(`/projects/${project.id}/`, Astro.site)
+	: undefined;
+---
+
+<BaseLayout
+	title={`${project.data.title} — DARK TZY`}
+	description={project.data.description}
+	canonicalUrl={canonicalUrl}
+	ogType="article"
+	ogImage={project.data.cover}
+	ogImageAlt={project.data.cover ? project.data.coverAlt ?? project.data.description : undefined}
+>
+	<article class="page-shell project-detail">
+		<header class="page-heading" data-reveal>
+			<div class="page-heading-main">
+				<a class="article-back-link" href={withBase("/projects/")}>← Tất cả dự án</a>
+				<p class="eyebrow">{project.data.category ?? "PROJECT"} / {project.data.status}</p>
+				<h1>{project.data.title}</h1>
+				<p class="page-heading-description">{project.data.description}</p>
+			</div>
+			<div class="page-index"><strong>{project.data.status}</strong><span>Project status</span></div>
+		</header>
+
+		<div class="project-detail-meta" data-reveal>
+			{project.data.pubDate && (
+				<p><span>DATE</span><time datetime={project.data.pubDate.toISOString()}>{formatDate(project.data.pubDate)}</time></p>
+			)}
+			{project.data.stack.length > 0 && (
+				<p><span>STACK</span>{project.data.stack.join(" / ")}</p>
+			)}
+			{project.data.github && (
+				<a href={project.data.github} target="_blank" rel="noreferrer">GitHub ↗</a>
+			)}
+			{project.data.demo && (
+				<a href={project.data.demo} target="_blank" rel="noreferrer">Live demo ↗</a>
+			)}
+		</div>
+
+		{project.data.cover && (
+			<figure class="project-cover" data-reveal>
+				<img
+					src={withBase(project.data.cover)}
+					alt={project.data.coverAlt ?? project.data.title}
+					width="1200"
+					height="675"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		)}
+
+		<div class="project-prose" data-reveal>
+			<Content />
+		</div>
+	</article>
+</BaseLayout>

@@ -1,0 +1,132 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { formatDate } from "../lib/content";
+import { withBase } from "../lib/urls";
+
+interface Heading {
+	depth: number;
+	slug: string;
+	text: string;
+}
+
+interface NeighborPost {
+	title: string;
+	href: string;
+}
+
+interface Props {
+	title: string;
+	description: string;
+	pubDate: Date;
+	updatedDate?: Date;
+	category?: string;
+	tags: string[];
+	cover?: string;
+	coverAlt?: string;
+	readingTime: string;
+	headings: Heading[];
+	previousPost?: NeighborPost;
+	nextPost?: NeighborPost;
+	canonicalUrl?: string;
+}
+
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	category,
+	tags,
+	cover,
+	coverAlt,
+	readingTime,
+	headings,
+	previousPost,
+	nextPost,
+	canonicalUrl,
+} = Astro.props;
+---
+
+<BaseLayout
+	title={`${title} — DARK TZY`}
+	description={description}
+	canonicalUrl={canonicalUrl}
+	ogType="article"
+	ogImage={cover}
+	ogImageAlt={cover ? coverAlt ?? description : undefined}
+	publishedTime={pubDate}
+	updatedTime={updatedDate}
+>
+	<article class="article-shell">
+		<header class="article-header" data-reveal>
+			<a class="article-back-link" href={withBase("/posts/")}>← Tất cả bài viết</a>
+			<p class="eyebrow article-kicker">
+				{category ?? "FIELD NOTES"} / {formatDate(pubDate)}
+			</p>
+			<h1>{title}</h1>
+			<p class="article-description">{description}</p>
+			<div class="article-meta">
+				<span>{readingTime}</span>
+				{updatedDate && updatedDate.getTime() !== pubDate.getTime() && (
+					<span>Cập nhật {formatDate(updatedDate)}</span>
+				)}
+			</div>
+			{tags.length > 0 && (
+				<ul class="article-tags" aria-label="Tags">
+					{tags.map((tag) => <li><a href={`${withBase("/posts/")}?tag=${encodeURIComponent(tag)}`}>{tag}</a></li>)}
+				</ul>
+			)}
+		</header>
+
+		{cover && (
+			<figure class="article-cover" data-reveal>
+				<img
+					src={withBase(cover)}
+					alt={coverAlt ?? title}
+					width="1200"
+					height="675"
+					loading="eager"
+					fetchpriority="high"
+				/>
+			</figure>
+		)}
+
+		<div class="article-layout">
+			<aside class="article-toc" aria-label="Mục lục" data-reveal>
+				<p class="article-toc-title">ON THIS PAGE</p>
+				{headings.length > 0 ? (
+					<nav>
+						<ul>
+							{headings.filter((heading) => heading.depth <= 3).map((heading) => (
+								<li class:list={{ "toc-nested": heading.depth === 3 }}>
+									<a href={`#${heading.slug}`}>{heading.text}</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				) : (
+					<p class="article-toc-empty">Bài viết không có tiêu đề mục lục.</p>
+				)}
+			</aside>
+
+			<div class="article-prose">
+				<slot />
+			</div>
+		</div>
+
+		<nav class="article-pagination" aria-label="Điều hướng bài viết">
+			{previousPost ? (
+				<a class="article-pagination-link" href={withBase(previousPost.href)}>
+					<span>← BÀI CŨ HƠN</span>
+					<strong>{previousPost.title}</strong>
+				</a>
+			) : <span />}
+			{nextPost && (
+				<a class="article-pagination-link article-pagination-next" href={withBase(nextPost.href)}>
+					<span>BÀI MỚI HƠN →</span>
+					<strong>{nextPost.title}</strong>
+				</a>
+			)}
+		</nav>
+	</article>
+</BaseLayout>

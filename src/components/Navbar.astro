@@ -1,0 +1,51 @@
+---
+import { withBase } from "../lib/urls";
+
+const links = [
+	{ label: "Home", href: withBase("/") },
+	{ label: "About", href: withBase("/about/") },
+	{ label: "Projects", href: withBase("/projects/") },
+	{ label: "Posts", href: withBase("/posts/") },
+	{ label: "Lab", href: withBase("/lab/") },
+	{ label: "Contact", href: withBase("/contact/") },
+];
+
+const currentPath = withBase(Astro.url.pathname);
+---
+
+<header class="site-header">
+	<nav class="container nav-shell" aria-label="Điều hướng chính">
+		<a class="wordmark" href={withBase("/")} aria-label="DARK TZY — Trang chủ">DARK <span>TZY</span></a>
+		<details class="nav-menu" open>
+			<summary class="nav-toggle">
+				<span>MENU</span>
+				<span class="menu-icon" aria-hidden="true"></span>
+			</summary>
+			<div class="nav-links">
+				{links.map(({ label, href }) => (
+					<a
+						class="nav-link"
+						href={href}
+						aria-current={currentPath === href ? "page" : undefined}
+					>
+						{label}
+					</a>
+				))}
+			</div>
+		</details>
+	</nav>
+</header>
+
+<script>
+	const navMenu = document.querySelector(".nav-menu");
+	const mobileNavQuery = window.matchMedia("(max-width: 700px)");
+
+	if (navMenu instanceof HTMLDetailsElement) {
+		const syncNavToViewport = () => {
+			navMenu.open = !mobileNavQuery.matches;
+		};
+
+		syncNavToViewport();
+		mobileNavQuery.addEventListener("change", syncNavToViewport);
+	}
+</script>

@@ -1,0 +1,40 @@
+---
+interface Props {
+	title: string;
+	excerpt: string;
+	href?: string;
+	pubDate: Date;
+	tags?: string[];
+	category?: string;
+	readingTime?: string;
+}
+
+const { title, excerpt, href, pubDate, tags = [], category, readingTime } = Astro.props;
+const formattedDate = new Intl.DateTimeFormat("vi-VN", {
+	day: "numeric",
+	month: "short",
+	year: "numeric",
+}).format(pubDate);
+---
+
+<article class:list={["post-card", { "is-linked": Boolean(href) }]}>
+	<div class="card-meta">
+		{category && <span>{category}</span>}
+		<time class="post-card-date" datetime={pubDate.toISOString()}>{formattedDate}</time>
+		{readingTime && <span>{readingTime}</span>}
+	</div>
+	<h2 class="card-title">
+		{href ? <a href={href}>{title}</a> : title}
+	</h2>
+	<p class="card-description">{excerpt}</p>
+	<div class="card-footer">
+		{tags.length > 0 && (
+			<ul class="card-tags" aria-label="Tags">
+				{tags.map((tag) => <li>{tag}</li>)}
+			</ul>
+		)}
+		{href && (
+			<a class="card-arrow" href={href} aria-label={`Read ${title}`}>↗</a>
+		)}
+	</div>
+</article>

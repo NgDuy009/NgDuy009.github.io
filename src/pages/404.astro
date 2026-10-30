@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/urls";
+---
+
+<BaseLayout
+	title="404 — DARK TZY"
+	description="Trang này không tồn tại. Quay lại không gian DARK TZY."
+	noIndex
+>
+	<section class="page-shell not-found" aria-labelledby="not-found-title">
+		<p class="eyebrow">ERROR / 404</p>
+		<h1 id="not-found-title">Signal not found.</h1>
+		<p class="page-heading-description">
+			Trang bạn đang tìm không tồn tại hoặc đã được di chuyển.
+		</p>
+		<a class="button button-primary" href={withBase("/")}>Quay về trang chủ <span aria-hidden="true">↗</span></a>
+	</section>
+</BaseLayout>

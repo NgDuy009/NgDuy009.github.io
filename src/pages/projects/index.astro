@@ -1,0 +1,134 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "../../components/ProjectCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../lib/urls";
+
+const projects = (await getCollection("projects")).sort((a, b) => {
+	if (a.data.featured !== b.data.featured) return Number(b.data.featured) - Number(a.data.featured);
+	return (b.data.pubDate?.getTime() ?? 0) - (a.data.pubDate?.getTime() ?? 0);
+});
+const categories = [...new Set(projects.map((project) => project.data.category).filter(Boolean))]
+	.sort((a, b) => a!.localeCompare(b!));
+const technologies = [...new Set(projects.flatMap((project) => project.data.stack))]
+	.sort((a, b) => a.localeCompare(b));
+---
+
+<BaseLayout
+	title="Projects — DARK TZY"
+	description="Các dự án phần mềm và thử nghiệm được tuyển chọn của DARK TZY."
+>
+	<section class="page-shell">
+		<header class="page-heading" data-reveal>
+			<div class="page-heading-main">
+				<p class="eyebrow">PROJECTS / SELECTED WORK</p>
+				<h1>Built with<br />intention.</h1>
+				<p class="page-heading-description">
+					Một tuyển tập những sản phẩm, thử nghiệm và công việc đang được phát
+					triển — với trạng thái được ghi rõ.
+				</p>
+			</div>
+			<div class="page-index"><strong>{String(projects.length).padStart(2, "0")}</strong><span>Projects</span><span>Published</span></div>
+		</header>
+		<div class="collection-bar">
+			<span>Selected work</span>
+			<span><strong data-project-count>{projects.length}</strong> entries</span>
+		</div>
+
+		{projects.length > 0 && (
+			<div class="collection-filters" data-reveal>
+				<label>
+					<span>Category</span>
+					<select data-project-category aria-label="Lọc dự án theo danh mục">
+						<option value="all">Tất cả danh mục</option>
+						{categories.map((category) => <option value={category}>{category}</option>)}
+					</select>
+				</label>
+				<label>
+					<span>Technology</span>
+					<select data-project-stack aria-label="Lọc dự án theo công nghệ">
+						<option value="all">Tất cả công nghệ</option>
+						{technologies.map((technology) => <option value={technology}>{technology}</option>)}
+					</select>
+				</label>
+				<button class="filter-reset" type="button" data-project-reset>Reset filters</button>
+			</div>
+		)}
+
+		<div class="collection-body" data-reveal>
+			{projects.length > 0 ? (
+				<div class="project-grid">
+					{projects.map((project) => (
+						<div
+							data-project-card
+							data-category={project.data.category ?? ""}
+							data-stack={project.data.stack.join("|")}
+							data-reveal
+						>
+							<ProjectCard
+								title={project.data.title}
+								description={project.data.description}
+								status={project.data.status}
+								category={project.data.category}
+								stack={project.data.stack}
+								cover={project.data.cover}
+								coverAlt={project.data.coverAlt}
+								href={withBase(`/projects/${project.id}/`)}
+							/>
+						</div>
+					))}
+				</div>
+			) : (
+				<div class="collection-empty">
+					<span class="collection-empty-index">INDEX / 00</span>
+					<div>
+						<h2>Chưa có dự án được công bố.</h2>
+						<p>
+							Các project sẽ được thêm sau khi có nội dung được xác nhận. Mỗi mục
+							sẽ hiển thị rõ trạng thái: Completed, In Progress, Prototype hoặc Planned.
+						</p>
+					</div>
+				</div>
+			)}
+			<p class="search-empty" data-project-empty hidden>Không có dự án phù hợp với bộ lọc.</p>
+		</div>
+	</section>
+
+	<script>
+		const categoryFilter = document.querySelector<HTMLSelectElement>("[data-project-category]");
+		const stackFilter = document.querySelector<HTMLSelectElement>("[data-project-stack]");
+		const resetButton = document.querySelector<HTMLButtonElement>("[data-project-reset]");
+
+		if (categoryFilter && stackFilter) {
+			const cards = [...document.querySelectorAll<HTMLElement>("[data-project-card]")];
+			const count = document.querySelector<HTMLElement>("[data-project-count]");
+			const empty = document.querySelector<HTMLElement>("[data-project-empty]");
+
+			const applyFilters = () => {
+				let visibleCount = 0;
+				for (const card of cards) {
+					const matchesCategory =
+						categoryFilter.value === "all" ||
+						card.dataset.category === categoryFilter.value;
+					const technologies = card.dataset.stack?.split("|") ?? [];
+					const matchesStack =
+						stackFilter.value === "all" || technologies.includes(stackFilter.value);
+					const visible = matchesCategory && matchesStack;
+					card.hidden = !visible;
+					if (visible) visibleCount += 1;
+				}
+
+				if (count) count.textContent = String(visibleCount);
+				if (empty) empty.hidden = visibleCount > 0;
+			};
+
+			categoryFilter.addEventListener("change", applyFilters);
+			stackFilter.addEventListener("change", applyFilters);
+			resetButton?.addEventListener("click", () => {
+				categoryFilter.value = "all";
+				stackFilter.value = "all";
+				applyFilters();
+			});
+		}
+	</script>
+</BaseLayout>

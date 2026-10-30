@@ -1,0 +1,51 @@
+---
+import { withBase } from "../lib/urls";
+
+type ProjectStatus = "Completed" | "In Progress" | "Prototype" | "Planned";
+
+interface Props {
+	title: string;
+	description: string;
+	status: ProjectStatus;
+	href?: string;
+	category?: string;
+	stack?: string[];
+	cover?: string;
+	coverAlt?: string;
+}
+
+const { title, description, status, href, category, stack = [], cover, coverAlt } = Astro.props;
+const statusClass = status.toLowerCase().replaceAll(" ", "-");
+---
+
+<article class:list={["project-card", { "is-linked": Boolean(href) }]}>
+	<div class="card-meta">
+		<span>{category ?? "Project"}</span>
+		<span class:list={["project-status", `status-${statusClass}`]}>{status}</span>
+	</div>
+	{cover && (
+		<img
+			class="project-card-cover"
+			src={withBase(cover)}
+			alt={coverAlt ?? title}
+			width="1200"
+			height="675"
+			loading="lazy"
+			decoding="async"
+		/>
+	)}
+	<h2 class="card-title">
+		{href ? <a href={href}>{title}</a> : title}
+	</h2>
+	<p class="card-description">{description}</p>
+	<div class="card-footer">
+		{stack.length > 0 && (
+			<ul class="card-tags" aria-label="Technology stack">
+				{stack.map((technology) => <li>{technology}</li>)}
+			</ul>
+		)}
+		{href && (
+			<a class="card-arrow" href={href} aria-label={`View ${title}`}>↗</a>
+		)}
+	</div>
+</article>

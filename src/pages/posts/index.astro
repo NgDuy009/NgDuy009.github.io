@@ -1,0 +1,208 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+import { calculateReadingTime } from "../../lib/content";
+import { withBase } from "../../lib/urls";
+
+const posts = (await getCollection("posts", ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
+	a.localeCompare(b),
+);
+const searchIndex = posts.map((post) => ({
+	id: post.id,
+	title: post.data.title,
+	description: post.data.description,
+	content: post.body ?? "",
+	tags: post.data.tags,
+	category: post.data.category ?? "",
+}));
+const searchIndexJson = JSON.stringify(searchIndex)
+	.replaceAll("<", "\\u003c")
+	.replaceAll("\u2028", "\\u2028")
+	.replaceAll("\u2029", "\\u2029");
+---
+
+<BaseLayout
+	title="Posts — DARK TZY"
+	description="Bài viết, ghi chú và hướng dẫn về công nghệ trên DARK TZY."
+>
+	<section class="page-shell">
+		<header class="page-heading" data-reveal>
+			<div class="page-heading-main">
+				<p class="eyebrow">POSTS / FIELD NOTES</p>
+				<h1>Notes from<br />the process.</h1>
+				<p class="page-heading-description">
+					Ghi chú, hướng dẫn và suy ngẫm về những điều đang học — viết bằng
+					Markdown, xuất bản có chủ đích.
+				</p>
+			</div>
+			<div class="page-index"><strong>{String(posts.length).padStart(2, "0")}</strong><span>Field notes</span><span>Published</span></div>
+		</header>
+		<div class="collection-bar">
+			<span>All entries</span>
+			<span>Markdown / <strong data-post-count>{posts.length}</strong></span>
+		</div>
+
+		<div class="post-search" data-reveal>
+			<label class="post-search-label" for="post-search-input">SEARCH THE ARCHIVE</label>
+			<input
+				id="post-search-input"
+				class="post-search-input"
+				type="search"
+				placeholder="Tìm tiêu đề, nội dung hoặc tag..."
+				autocomplete="off"
+			/>
+			{tags.length > 0 && (
+				<div class="tag-filters" aria-label="Lọc bài viết theo tag">
+					<button class="tag-filter is-active" type="button" data-tag-filter="all" aria-pressed="true">
+						Tất cả
+					</button>
+					{tags.map((tag) => (
+						<button class="tag-filter" type="button" data-tag-filter={tag} aria-pressed="false">
+							{tag}
+						</button>
+					))}
+				</div>
+			)}
+		</div>
+
+		<div class="collection-body" data-reveal>
+			{posts.length > 0 ? (
+				<div class="post-grid">
+					{posts.map((post) => (
+						<div data-post-card={post.id} data-reveal>
+							<PostCard
+								title={post.data.title}
+								excerpt={post.data.description}
+								href={withBase(`/posts/${post.id}/`)}
+								pubDate={post.data.pubDate}
+								tags={post.data.tags}
+								category={post.data.category}
+								readingTime={calculateReadingTime(post.body ?? "")}
+							/>
+						</div>
+					))}
+				</div>
+			) : (
+				<div class="collection-empty">
+					<span class="collection-empty-index">VOL. 00</span>
+					<div>
+						<h2>Trang viết đang chờ dòng đầu tiên.</h2>
+						<p>
+							Chưa có bài viết được xuất bản. Tạo một file Markdown trong
+							<code>src/content/posts/</code> để bắt đầu.
+						</p>
+					</div>
+				</div>
+			)}
+			<p class="search-empty" data-search-empty hidden>Không tìm thấy bài viết phù hợp.</p>
+			<p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
+		</div>
+	</section>
+
+	<script type="application/json" id="post-search-index" set:html={searchIndexJson}></script>
+
+	<script>
+		interface SearchEntry {
+			id: string;
+			title: string;
+			description: string;
+			content: string;
+			tags: string[];
+			category: string;
+		}
+
+		const searchInput = document.querySelector<HTMLInputElement>("#post-search-input");
+		const indexElement = document.querySelector<HTMLScriptElement>("#post-search-index");
+
+		if (searchInput && indexElement) {
+			const index = JSON.parse(indexElement.textContent ?? "[]") as SearchEntry[];
+			const normalize = (value: string) =>
+				value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("vi");
+			const indexById = new Map(index.map((entry) => [entry.id, entry]));
+			const normalizedIndex = new Map(
+				index.map((entry) => [
+					entry.id,
+					normalize([
+						entry.title,
+						entry.description,
+						entry.content,
+						entry.category,
+						...entry.tags,
+					].join(" ")),
+				]),
+			);
+			const cards = [...document.querySelectorAll<HTMLElement>("[data-post-card]")];
+			const count = document.querySelector<HTMLElement>("[data-post-count]");
+			const emptyMessage = document.querySelector<HTMLElement>("[data-search-empty]");
+			const status = document.querySelector<HTMLElement>("[data-search-status]");
+			const filterButtons = [
+				...document.querySelectorAll<HTMLButtonElement>("[data-tag-filter]"),
+			];
+			const selectedTags = new Set<string>();
+
+			const updateResults = () => {
+				const terms = normalize(searchInput.value).trim().split(/\s+/u).filter(Boolean);
+				let visibleCount = 0;
+
+				for (const card of cards) {
+					const entry = indexById.get(card.dataset.postCard ?? "");
+					if (!entry) continue;
+
+					const searchableText = normalizedIndex.get(entry.id) ?? "";
+					const matchesText = terms.every((term) => searchableText.includes(term));
+					const matchesTag =
+						selectedTags.size === 0 ||
+						[...selectedTags].some((tag) =>
+							entry.tags.some((entryTag) => normalize(entryTag) === normalize(tag)),
+						);
+					const visible = matchesText && matchesTag;
+
+					card.hidden = !visible;
+					if (visible) visibleCount += 1;
+				}
+
+				if (count) count.textContent = String(visibleCount);
+				if (emptyMessage) emptyMessage.hidden = visibleCount > 0;
+				if (status) status.textContent = `${visibleCount} bài viết`;
+			};
+
+			searchInput.addEventListener("input", updateResults);
+
+			for (const button of filterButtons) {
+				button.addEventListener("click", () => {
+					const tag = button.dataset.tagFilter ?? "all";
+
+					if (tag === "all") {
+						selectedTags.clear();
+					} else if (selectedTags.has(tag)) {
+						selectedTags.delete(tag);
+					} else {
+						selectedTags.add(tag);
+					}
+
+					for (const filterButton of filterButtons) {
+						const filterTag = filterButton.dataset.tagFilter ?? "all";
+						const active = filterTag === "all"
+							? selectedTags.size === 0
+							: selectedTags.has(filterTag);
+						filterButton.classList.toggle("is-active", active);
+						filterButton.setAttribute("aria-pressed", String(active));
+					}
+
+					updateResults();
+				});
+			}
+
+			const initialTag = new URLSearchParams(window.location.search).get("tag");
+			if (initialTag) {
+				const matchingButton = filterButtons.find(
+					(button) => normalize(button.dataset.tagFilter ?? "") === normalize(initialTag),
+				);
+				matchingButton?.click();
+			}
+		}
+	</script>
+</BaseLayout>

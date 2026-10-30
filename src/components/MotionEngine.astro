@@ -1,0 +1,153 @@
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<script>
+	const root = document.documentElement;
+	const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+	if (!reducedMotion.matches && "IntersectionObserver" in window) {
+		const revealItems = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+		if (revealItems.length > 0) {
+			const observer = new IntersectionObserver(
+				(entries, currentObserver) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("is-visible");
+							currentObserver.unobserve(entry.target);
+						}
+					}
+				},
+				{ threshold: 0.12, rootMargin: "0px 0px -36px 0px" },
+			);
+
+			root.dataset.motionReady = "true";
+			revealItems.forEach((item) => observer.observe(item));
+		}
+	}
+
+	const finePointer = window.matchMedia("(pointer: fine)");
+	const glow = document.querySelector<HTMLElement>(".cursor-glow");
+
+	if (glow && finePointer.matches && !reducedMotion.matches) {
+		root.dataset.cursorGlowReady = "true";
+
+		let pointerX = 0;
+		let pointerY = 0;
+		let currentX = 0;
+		let currentY = 0;
+		let frame = 0;
+		let hasPointerPosition = false;
+		let magneticTarget: HTMLElement | null = null;
+		let magneticX = 0;
+		let magneticY = 0;
+
+		const resetMagneticTarget = () => {
+			if (magneticTarget) {
+				magneticTarget.style.setProperty("--magnetic-x", "0px");
+				magneticTarget.style.setProperty("--magnetic-y", "0px");
+			}
+
+			magneticTarget = null;
+			magneticX = 0;
+			magneticY = 0;
+		};
+
+		const animatePointer = () => {
+			const easing = 0.14;
+			currentX += (pointerX - currentX) * easing;
+			currentY += (pointerY - currentY) * easing;
+			glow.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+
+			if (magneticTarget) {
+				magneticX += (Number(magneticTarget.dataset.targetX ?? 0) - magneticX) * 0.18;
+				magneticY += (Number(magneticTarget.dataset.targetY ?? 0) - magneticY) * 0.18;
+
+				magneticTarget.style.setProperty("--magnetic-x", `${magneticX}px`);
+				magneticTarget.style.setProperty("--magnetic-y", `${magneticY}px`);
+			}
+
+			const pointerSettled =
+				Math.abs(pointerX - currentX) < 0.35 &&
+				Math.abs(pointerY - currentY) < 0.35;
+			const magneticSettled =
+				!magneticTarget ||
+				(Math.abs(Number(magneticTarget.dataset.targetX ?? 0) - magneticX) < 0.2 &&
+					Math.abs(Number(magneticTarget.dataset.targetY ?? 0) - magneticY) < 0.2);
+
+			if (!pointerSettled || !magneticSettled) {
+				frame = requestAnimationFrame(animatePointer);
+			} else {
+				frame = 0;
+			}
+		};
+
+		const requestAnimation = () => {
+			if (frame === 0) {
+				frame = requestAnimationFrame(animatePointer);
+			}
+		};
+
+		const handlePointerMove = (event: PointerEvent) => {
+			if (event.pointerType === "touch" || !finePointer.matches || reducedMotion.matches) {
+				glow.classList.remove("is-visible", "is-interactive");
+				resetMagneticTarget();
+				return;
+			}
+
+			pointerX = event.clientX;
+			pointerY = event.clientY;
+
+			if (!hasPointerPosition) {
+				currentX = pointerX;
+				currentY = pointerY;
+				glow.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+				hasPointerPosition = true;
+			}
+
+			glow.classList.add("is-visible");
+
+			const target = event.target instanceof Element
+				? event.target.closest<HTMLElement>("a, button, summary, [data-magnetic]")
+				: null;
+			glow.classList.toggle("is-interactive", Boolean(target));
+
+			const nextMagneticTarget = event.target instanceof Element
+				? event.target.closest<HTMLElement>("[data-magnetic]")
+				: null;
+
+			if (nextMagneticTarget !== magneticTarget) {
+				resetMagneticTarget();
+				magneticTarget = nextMagneticTarget;
+			}
+
+			if (magneticTarget) {
+				const bounds = magneticTarget.getBoundingClientRect();
+				const strength = Number(magneticTarget.dataset.magneticStrength ?? 0.12);
+				const maxOffset = Number(magneticTarget.dataset.magneticLimit ?? 8);
+				magneticTarget.dataset.targetX = String(
+					Math.max(-maxOffset, Math.min(maxOffset, (event.clientX - (bounds.left + bounds.width / 2)) * strength)),
+				);
+				magneticTarget.dataset.targetY = String(
+					Math.max(-maxOffset, Math.min(maxOffset, (event.clientY - (bounds.top + bounds.height / 2)) * strength)),
+				);
+			}
+
+			requestAnimation();
+		};
+
+		const handlePointerOut = (event: PointerEvent) => {
+			if (event.relatedTarget === null) {
+				glow.classList.remove("is-visible", "is-interactive");
+				resetMagneticTarget();
+				requestAnimation();
+			}
+		};
+
+		window.addEventListener("pointermove", handlePointerMove, { passive: true });
+		window.addEventListener("pointerout", handlePointerOut, { passive: true });
+		window.addEventListener("blur", () => {
+			glow.classList.remove("is-visible", "is-interactive");
+			resetMagneticTarget();
+		});
+	}
+</script>

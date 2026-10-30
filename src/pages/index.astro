@@ -1,0 +1,129 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { calculateReadingTime } from "../lib/content";
+import { withBase } from "../lib/urls";
+
+const latestPosts = (await getCollection("posts", ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+	.slice(0, 2);
+const featuredProjects = (await getCollection("projects", ({ data }) => data.featured))
+	.sort((a, b) => (b.data.pubDate?.getTime() ?? 0) - (a.data.pubDate?.getTime() ?? 0))
+	.slice(0, 2);
+---
+
+<BaseLayout
+	title="DARK TZY — Personal Digital Space"
+	description="Không gian cá nhân về công nghệ, dự án, thử nghiệm và ghi chú."
+>
+	<section class="hero">
+		<div class="hero-copy-block">
+			<p class="eyebrow hero-kicker">PERSONAL DIGITAL SPACE</p>
+			<h1 class="hero-title">DARK <span>TZY</span></h1>
+			<p class="hero-subtitle">A quiet interface. A strong signal.</p>
+			<p class="hero-description">
+				Exploring technology. Building ideas. Creating with purpose.
+			</p>
+			<div class="button-row hero-actions">
+				<a class="button button-primary" data-magnetic href={withBase("/projects/")}>Khám phá dự án <span aria-hidden="true">↗</span></a>
+				<a class="button button-secondary" data-magnetic href={withBase("/posts/")}>Đọc field notes <span aria-hidden="true">↗</span></a>
+			</div>
+		</div>
+		<aside class="hero-index" aria-label="Thông tin về website">
+			<strong>DT — 001</strong>
+			<span>Independent</span>
+			<span>Digital archive</span>
+			<span>Est. 2026</span>
+		</aside>
+	</section>
+
+	<section class="home-section" data-reveal aria-labelledby="signal-title">
+		<header>
+			<p class="section-label"><span>01</span> / THE SIGNAL</p>
+			<h2 class="section-title" id="signal-title">Ý tưởng cần một nơi để phát triển.</h2>
+		</header>
+		<div class="section-body">
+			<p>
+				DARK TZY là một không gian cá nhân đang được xây dựng — nơi công nghệ,
+				sáng tạo số và quá trình học hỏi được lưu lại qua dự án, thử nghiệm và
+				ghi chú.
+			</p>
+		</div>
+	</section>
+
+	<section class="archive-section" data-reveal aria-labelledby="featured-title">
+		<header class="archive-heading">
+			<div>
+				<p class="section-label"><span>02</span> / SELECTED WORK</p>
+				<h2 class="section-title" id="featured-title">Selected projects.</h2>
+			</div>
+			<a class="archive-link" href={withBase("/projects/")}>Tất cả dự án <span aria-hidden="true">↗</span></a>
+		</header>
+		{featuredProjects.length > 0 ? (
+			<div class="project-grid">
+				{featuredProjects.map((project) => (
+					<ProjectCard
+						title={project.data.title}
+						description={project.data.description}
+						status={project.data.status}
+						category={project.data.category}
+						stack={project.data.stack}
+						cover={project.data.cover}
+						coverAlt={project.data.coverAlt}
+						href={withBase(`/projects/${project.id}/`)}
+					/>
+				))}
+			</div>
+		) : (
+			<div class="collection-empty home-empty">
+				<span class="collection-empty-index">INDEX / 00</span>
+				<div>
+					<h3>Chưa có dự án nổi bật.</h3>
+					<p>Dự án được đánh dấu featured sẽ xuất hiện tại đây sau khi được bổ sung.</p>
+				</div>
+			</div>
+		)}
+	</section>
+
+	<section class="archive-section" data-reveal aria-labelledby="latest-title">
+		<header class="archive-heading">
+			<div>
+				<p class="section-label"><span>03</span> / FIELD NOTES</p>
+				<h2 class="section-title" id="latest-title">Latest writing.</h2>
+			</div>
+			<a class="archive-link" href={withBase("/posts/")}>Tất cả bài viết <span aria-hidden="true">↗</span></a>
+		</header>
+		{latestPosts.length > 0 ? (
+			<div class="post-grid">
+				{latestPosts.map((post) => (
+					<div>
+						<PostCard
+							title={post.data.title}
+							excerpt={post.data.description}
+							href={withBase(`/posts/${post.id}/`)}
+							pubDate={post.data.pubDate}
+							tags={post.data.tags}
+							category={post.data.category}
+							readingTime={calculateReadingTime(post.body ?? "")}
+						/>
+					</div>
+				))}
+			</div>
+		) : (
+			<div class="collection-empty home-empty">
+				<span class="collection-empty-index">VOL. 00</span>
+				<div>
+					<h3>Chưa có bài viết được xuất bản.</h3>
+					<p>Bài viết mới nhất sẽ xuất hiện tại đây sau khi được xuất bản.</p>
+				</div>
+			</div>
+		)}
+	</section>
+
+	<section class="focus-band" data-reveal aria-label="Trạng thái hiện tại">
+		<p><strong>Current focus</strong> — Xây dựng nền tảng cho DARK TZY.</p>
+		<span class="focus-status"><span class="status-dot" aria-hidden="true"></span> In progress</span>
+	</section>
+</BaseLayout>
