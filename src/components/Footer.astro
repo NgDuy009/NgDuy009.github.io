@@ -22,7 +22,9 @@ import { withBase } from "../lib/urls";
 		</div>
 	</div>
 	<div class="footer-bottom">
-		<a class="wordmark footer-wordmark" href={withBase("/")}>DARK TZY<span class="wordmark-period">.</span></a>
+		<a class="brand-mark brand-mark-footer" href={withBase("/")} aria-label="DARK TZY — Home">
+			<img src={withBase("/images/tzy-monogram.png")} alt="" width="1254" height="1254" loading="lazy" decoding="async" />
+		</a>
 		<p>The Art of Individuality.</p>
 		<p>© {new Date().getFullYear()} DARK TZY</p>
 	</div>

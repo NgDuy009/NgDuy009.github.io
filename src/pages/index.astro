@@ -9,131 +9,428 @@ import { withBase } from "../lib/urls";
 const latestPosts = (await getCollection("posts", ({ data }) => !data.draft))
 	.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
 	.slice(0, 2);
-const featuredCollections = (await getCollection("collections", ({ data }) => data.featured))
-	.slice(0, 2);
+
+const tzyPerfumeVariants = [
+	{
+		name: "LUMIÈRE",
+		description: "Pure, soft and radiant.",
+		character: "PURE / SOFT / RADIANT",
+		image: "/images/tzy-perfume/01-lumiere.png",
+		alt: "LUMIÈRE TZY perfume bottle in a light floral composition",
+		width: 385,
+		height: 383,
+	},
+	{
+		name: "NOIR",
+		description: "Bold, mysterious and timeless.",
+		character: "BOLD / MYSTERIOUS / TIMELESS",
+		image: "/images/tzy-perfume/02-noir.png",
+		alt: "NOIR TZY perfume bottle in a dark botanical composition",
+		width: 368,
+		height: 383,
+	},
+	{
+		name: "FLEUR",
+		description: "Elegant, delicate and modern.",
+		character: "ELEGANT / DELICATE / MODERN",
+		image: "/images/tzy-perfume/03-fleur.png",
+		alt: "FLEUR TZY perfume bottle with pale florals and stone",
+		width: 393,
+		height: 383,
+	},
+	{
+		name: "BLANC",
+		description: "Clean, fresh and sophisticated.",
+		character: "CLEAN / FRESH / SOPHISTICATED",
+		image: "/images/tzy-perfume/04-blanc.png",
+		alt: "BLANC TZY perfume bottle in a clean ivory composition",
+		width: 365,
+		height: 383,
+	},
+];
 ---
 
 <BaseLayout
 	title="DARK TZY — The Art of Individuality"
-	description="Personal Fashion · Visual Culture · Creative Journal."
+	description="DARK TZY — A digital fashion maison. The Art of Individuality."
+	heroImage={withBase("/images/hero-main.png")}
 >
-	<section class="maison-hero" aria-labelledby="home-title">
+	<section class="maison-hero" aria-label="DARK TZY fashion maison">
 		<img
 			class="maison-hero-image"
-			src={withBase(editorialImages[0].src)}
-			alt={editorialImages[0].alt}
+			src={withBase("/images/hero-main.png")}
+			alt=""
 			data-image-mask
 			data-story-parallax
-			width="1200"
-			height="1500"
+			width="1734"
+			height="907"
 			fetchpriority="high"
 			decoding="async"
 		/>
 		<div class="maison-hero-shade"></div>
-		<figure class="maison-hero-inset" aria-label="Fashion campaign study">
+		<div class="maison-hero-copy">
 			<img
-				src={withBase(editorialImages[1].src)}
-				alt={editorialImages[1].alt}
-				width="960"
-				height="1200"
-				fetchpriority="high"
+				class="maison-hero-logo"
+				src={withBase("/images/tzy-monogram.png")}
+				alt="TZY monogram"
+				width="1254"
+				height="1254"
+				data-hero-logo
 				decoding="async"
 			/>
-			<figcaption><span>CAMPAIGN STUDY / 02</span><span>UNSPLASH EDITORIAL REFERENCE</span></figcaption>
-		</figure>
-		<div class="maison-hero-copy">
-			<p class="maison-kicker" data-hero-stagger>Maison personnelle · Fashion & visual culture</p>
-			<h1 id="home-title" data-hero-title><span class="hero-title-line">DARK</span> <em class="hero-title-line">TZY</em></h1>
-			<p class="maison-tagline" data-hero-stagger>The Art of Individuality.</p>
-			<a class="text-link maison-hero-link" data-magnetic href={withBase("/gallery/")}>
-				Enter the visual archive <span aria-hidden="true">↗</span>
+			<p class="maison-kicker" data-hero-kicker>AN INDEPENDENT FASHION MAISON</p>
+			<h1 class="maison-tagline">
+				<span data-hero-line>THE ART OF</span>
+				<span data-hero-line><em>INDIVIDUALITY.</em></span>
+			</h1>
+			<p class="maison-hero-description" data-hero-description>
+				A personal expression of fashion, visual culture and contemporary elegance.
+			</p>
+			<a class="text-link maison-hero-link" data-magnetic data-hero-cta href={withBase("/about/")}>
+				DISCOVER THE MAISON <span aria-hidden="true">→</span>
 			</a>
 		</div>
-		<p class="maison-hero-caption">CAMPAIGN 01 &nbsp;·&nbsp; EDITORIAL REFERENCES / UNSPLASH</p>
-		<p class="maison-hero-edition">PERSONAL STYLE<br />IN A DIFFERENT LIGHT</p>
-		<a class="hero-scroll" href="#editorial-note"><span></span>Scroll to discover</a>
+		<div class="maison-hero-meta" data-hero-meta>
+			<p>EST. 2026</p>
+			<p>FASHION / VISUAL CULTURE / LIFESTYLE</p>
+			<a class="hero-scroll" href="#editorial-note"><span></span>SCROLL TO EXPLORE</a>
+		</div>
+	</section>
+
+	<section class="signature-editorial" aria-labelledby="signature-editorial-title">
+		<div class="signature-editorial-copy">
+			<p class="signature-editorial-eyebrow" data-signature-kicker>DARK TZY — PRIVATE COLLECTION / 001</p>
+			<h2 id="signature-editorial-title" class="signature-editorial-title">
+				<span data-signature-line>BEYOND</span>
+				<span data-signature-line><em>THE ORDINARY.</em></span>
+			</h2>
+			<p class="signature-editorial-product" data-signature-product>THE SIGNATURE VARSITY</p>
+			<span class="signature-editorial-rule" data-signature-rule aria-hidden="true"></span>
+			<p class="signature-editorial-description" data-signature-copy>
+				A study in contrast, identity and contemporary expression. Designed around the
+				balance of monochrome elegance and distinctive individuality.
+			</p>
+			<ul class="signature-editorial-details" data-signature-details>
+				<li>SIGNATURE DESIGN</li>
+				<li>BLACK / IVORY</li>
+				<li>TZY MONOGRAM</li>
+				<li>FRONT &amp; BACK DETAILS</li>
+			</ul>
+			<p class="signature-editorial-tagline" data-signature-tagline>STYLE BEYOND THE SEEN.</p>
+		</div>
+		<figure class="signature-editorial-visual" data-signature-parallax>
+			<figcaption class="signature-editorial-visual-label">
+				<span>001</span>
+				<span>FRONT / BACK DETAILS</span>
+			</figcaption>
+			<img
+				src={withBase("/images/tzy-varsity-editorial.png")}
+				alt="TZY black and ivory signature varsity jacket, front and back views"
+				width="1536"
+				height="1024"
+				loading="lazy"
+				data-signature-image
+				decoding="async"
+			/>
+		</figure>
+		<p class="signature-editorial-caption" data-signature-caption>
+			A DISTINCTIVE EXPRESSION OF IDENTITY — TZY.
+		</p>
 	</section>
 
 	<section class="editorial-note" id="editorial-note" data-reveal aria-labelledby="editorial-note-title">
-		<p class="eyebrow">A PERSONAL FASHION MAISON</p>
+		<p class="eyebrow">THE PHILOSOPHY</p>
 		<div class="editorial-note-copy">
-			<h2 id="editorial-note-title">Style is a way<br />of <em>being seen.</em></h2>
+			<h2 id="editorial-note-title">Style is not defined.<br /><em>It is discovered.</em></h2>
 			<p>
-				DARK TZY is a personal space for fashion, visual culture, and the ideas
-				that shape the way we dress. A quiet archive, still taking form.
+				DARK TZY is a personal fashion and visual universe exploring individuality,
+				contemporary aesthetics and the relationship between style and identity.
 			</p>
 		</div>
 	</section>
 
-	<section class="home-collection" data-reveal aria-labelledby="collection-feature-title">
-		<div class="home-section-heading">
-			<p class="eyebrow">01 / THE COLLECTIONS</p>
-			<a class="text-link" href={withBase("/collections/")}>View the archive <span aria-hidden="true">↗</span></a>
+	<section class="home-collection home-knitwear-section" data-knitwear-editorial aria-labelledby="home-knitwear-title">
+		<div class="home-knitwear-copy">
+			<p class="home-knitwear-eyebrow" data-knitwear-kicker>TZY PRIVATE COLLECTION — 001</p>
+			<h2 class="home-knitwear-title" id="home-knitwear-title">
+				<span data-knitwear-line>THE MONOCHROME</span>
+				<span data-knitwear-line><em>BLOOM</em></span>
+			</h2>
+			<span class="home-knitwear-rule" data-knitwear-rule aria-hidden="true"></span>
+			<p class="home-knitwear-description" data-knitwear-description>
+				A study in timeless elegance, monochromatic botanical artistry and contemporary knitwear.
+			</p>
+			<ul class="home-knitwear-details" data-knitwear-details>
+				<li>IVORY / MONOCHROME</li>
+				<li>HIGH-NECK KNITWEAR</li>
+				<li>FRONT &amp; BACK SIGNATURE DETAILS</li>
+			</ul>
+			<p class="home-knitwear-tagline" data-knitwear-tagline>STYLE BEYOND THE SEEN.</p>
 		</div>
-		<h2 class="visually-hidden" id="collection-feature-title">The collections</h2>
-		{featuredCollections.length > 0 ? (
-			<div class="collection-grid">
-				{featuredCollections.map((collection, index) => (
-					<a class="home-collection-feature" href={withBase(`/collections/${collection.id}/`)}>
-						<img
-							src={withBase(collection.data.cover)}
-							alt={collection.data.coverAlt}
-							width="960"
-							height="1200"
-							loading="lazy"
-							decoding="async"
-						/>
-						<span>{collection.data.category} / {String(index + 1).padStart(2, "0")}</span>
-						<strong>{collection.data.title}</strong>
-					</a>
-				))}
-			</div>
-		) : (
-			<div class="collection-opener">
-				<a class="collection-opener-image" href={withBase("/gallery/")} aria-label="Open the visual archive">
-					<img src={withBase(editorialImages[2].src)} alt={editorialImages[2].alt} data-image-mask width="960" height="1200" loading="lazy" decoding="async" />
-					<span>01 / FORM & LIGHT</span>
-				</a>
-				<div class="collection-opener-copy">
-					<p class="eyebrow">A PERSONAL ARCHIVE, GATHERED OVER TIME</p>
-					<h2>Considered.<br /><em>Never prescribed.</em></h2>
-					<p>
-						An open visual index for fashion, silhouette, and detail. These are
-						editorial references—not personal looks or claimed collections.
-					</p>
-					<a class="text-link" href={withBase("/collections/")}>Discover the collection archive <span aria-hidden="true">↗</span></a>
-				</div>
-				<a class="collection-opener-image collection-opener-image-offset" href={withBase("/gallery/")} aria-label="View more editorial reference images">
-					<img src={withBase(editorialImages[4].src)} alt={editorialImages[4].alt} data-image-mask width="960" height="1200" loading="lazy" decoding="async" />
-					<span>02 / THE QUIET EDIT</span>
-				</a>
-			</div>
-		)}
+		<figure class="home-knitwear-visual" data-knitwear-collection-parallax>
+			<figcaption class="home-knitwear-visual-label">
+				<span>001</span>
+				<span>FRONT / BACK DETAILS</span>
+			</figcaption>
+			<img
+				src={withBase("/images/tzy-knitwear-editorial.png")}
+				alt="TZY ivory high-neck knitwear with monochrome botanical artwork, front and back views"
+				width="1536"
+				height="1024"
+				loading="lazy"
+				data-knitwear-image
+				decoding="async"
+			/>
+		</figure>
 	</section>
 
-	<section class="home-image-essay" data-reveal aria-labelledby="image-essay-title">
-		<header class="image-essay-heading">
-			<p class="eyebrow">AN OPEN MOODBOARD / UNSPLASH REFERENCES</p>
-			<h2 id="image-essay-title">The shape<br />of <em>a feeling.</em></h2>
-			<a class="text-link" href={withBase("/gallery/")}>View all images <span aria-hidden="true">↗</span></a>
+	<section class="home-image-essay tshirt-exhibition" data-tshirt-exhibition aria-labelledby="image-essay-title">
+		<header class="tshirt-exhibition-intro">
+			<p class="tshirt-exhibition-eyebrow" data-tshirt-copy>TZY — THE SIGNATURE T-SHIRT COLLECTION</p>
+			<h2 id="image-essay-title" class="tshirt-exhibition-title">
+				<span data-tshirt-line>An Icon,</span>
+				<span data-tshirt-line><em>Reimagined.</em></span>
+			</h2>
+			<p class="tshirt-exhibition-intro-copy" data-tshirt-copy>
+				Two expressions of contemporary elegance. Botanical artistry, refined silhouettes and a signature identity created to be worn beyond convention.
+			</p>
+			<span class="tshirt-exhibition-rule" data-tshirt-rule aria-hidden="true"></span>
+			<p class="tshirt-exhibition-index" data-tshirt-copy>TZY SIGNATURE SERIES <span>001–002</span></p>
 		</header>
-		<div class="image-essay-viewport" data-horizontal-viewport tabindex="0" role="region" aria-label="Horizontal fashion editorial image archive">
-			<div class="image-essay-track" data-horizontal-track>
-				{editorialImages.map((image, index) => (
-					<a class="image-essay-frame" href={withBase("/gallery/")} aria-label={`View visual archive: ${image.caption}`}>
-						<img src={withBase(image.src)} alt={image.alt} data-image-mask width="960" height="1200" loading="lazy" decoding="async" />
-						<span>{String(index + 1).padStart(2, "0")} &nbsp; / &nbsp; {image.caption}</span>
-					</a>
+
+		<article class="tshirt-look tshirt-look-noir">
+			<header class="tshirt-look-copy">
+				<p class="tshirt-exhibition-eyebrow">01 / NOIR BOTANICA</p>
+				<h3>NOIR<br /><em>BOTANICA</em></h3>
+				<p>A study in contrast. Dark sophistication meets delicate botanical expression.</p>
+			</header>
+			<div class="tshirt-garment-pair">
+				<figure class="tshirt-garment-view tshirt-front" data-tshirt-parallax>
+					<div class="tshirt-garment-window">
+						<img
+							src={withBase("/images/tzy-noir-botanica.png")}
+							alt="Front of the black TZY Noir Botanica T-shirt with botanical print and chest monogram"
+							width="1536"
+							height="1024"
+							loading="lazy"
+							decoding="async"
+							data-tshirt-image
+						/>
+					</div>
+					<figcaption>FRONT</figcaption>
+				</figure>
+				<figure class="tshirt-garment-view tshirt-back" data-tshirt-parallax>
+					<div class="tshirt-garment-window">
+						<img
+							src={withBase("/images/tzy-noir-botanica.png")}
+							alt="Back of the black TZY Noir Botanica T-shirt with botanical print"
+							width="1536"
+							height="1024"
+							loading="lazy"
+							decoding="async"
+							data-tshirt-image
+						/>
+					</div>
+					<figcaption>BACK</figcaption>
+				</figure>
+			</div>
+		</article>
+
+		<article class="tshirt-look tshirt-look-ivory">
+			<header class="tshirt-look-copy">
+				<p class="tshirt-exhibition-eyebrow">02 / IVORY BLOOM</p>
+				<h3>IVORY<br /><em>BLOOM</em></h3>
+				<p>An exploration of light, softness and quiet distinction. A botanical signature expressed through an understated ivory canvas.</p>
+			</header>
+			<div class="tshirt-ivory-gallery">
+				<figure class="tshirt-garment-view tshirt-ivory-front" data-tshirt-parallax>
+					<div class="tshirt-garment-window">
+						<img
+							src={withBase("/images/tzy-ivory-bloom.png")}
+							alt="Front of the ivory TZY Bloom T-shirt with botanical print and chest monogram"
+							width="1536"
+							height="1024"
+							loading="lazy"
+							decoding="async"
+							data-tshirt-image
+						/>
+					</div>
+					<figcaption>IVORY BLOOM / FRONT</figcaption>
+				</figure>
+				<figure class="tshirt-garment-view tshirt-back tshirt-ivory-back" data-tshirt-parallax>
+					<div class="tshirt-garment-window">
+						<img
+							src={withBase("/images/tzy-ivory-bloom.png")}
+							alt="Back of the ivory TZY Bloom T-shirt with botanical print"
+							width="1536"
+							height="1024"
+							loading="lazy"
+							decoding="async"
+							data-tshirt-image
+						/>
+					</div>
+					<figcaption>BACK / BOTANICAL SILHOUETTE</figcaption>
+				</figure>
+				<p class="tshirt-vertical-caption">A QUIETER KIND OF STATEMENT — TZY SIGNATURE SERIES</p>
+			</div>
+		</article>
+
+		<div class="tshirt-detail-study tzy-perfume-exhibition" role="group" aria-labelledby="tshirt-detail-title">
+			<header class="tshirt-detail-heading">
+				<p class="tshirt-exhibition-eyebrow">TZY — SCENTS BEYOND THE SEEN</p>
+				<h3 id="tshirt-detail-title">THE ART OF<br /><em>PERFUME.</em></h3>
+				<p class="tshirt-accessory-intro-copy">
+					A fragrance for every side of you. Discover four expressions of the DARK TZY olfactory universe, composed in a monochrome language of light, shadow and identity.
+				</p>
+				<span class="tzy-perfume-index">FOUR FRAGRANCES <span>001 — 004</span></span>
+			</header>
+			<figure class="tzy-perfume-hero" data-tshirt-parallax>
+				<div class="tzy-perfume-hero-image">
+					<img
+						src={withBase("/images/tzy-perfume/00-main-bottles.png")}
+						alt="LUMIÈRE and NOIR TZY perfume bottles presented together in a monochrome floral still life"
+						width="870"
+						height="428"
+						loading="lazy"
+						decoding="async"
+						data-tshirt-image
+					/>
+				</div>
+				<figcaption><span>THE SIGNATURE PAIR</span><span>LUMIÈRE / NOIR</span></figcaption>
+			</figure>
+
+			<div class="tzy-perfume-grid" aria-label="Four TZY fragrances">
+				{tzyPerfumeVariants.map((fragrance, index) => (
+					<figure class={`tzy-perfume-card tzy-perfume-card-${index + 1}`} data-perfume-card>
+						<div class="tzy-perfume-card-image" data-tshirt-parallax>
+							<img
+								src={withBase(fragrance.image)}
+								alt={fragrance.alt}
+								width={fragrance.width}
+								height={fragrance.height}
+								loading="lazy"
+								decoding="async"
+								data-tshirt-image
+							/>
+						</div>
+						<figcaption>
+							<p class="tzy-perfume-meta"><span>0{index + 1}</span> / TZY FRAGRANCE</p>
+							<h4>{fragrance.name}</h4>
+							<p>{fragrance.description}</p>
+							<span class="tzy-perfume-character">{fragrance.character}</span>
+						</figcaption>
+					</figure>
 				))}
 			</div>
+
+			<div class="tzy-perfume-details">
+				<div class="tzy-perfume-details-heading">
+					<p class="tshirt-exhibition-eyebrow">THE OBJECT / THE RITUAL</p>
+					<h4>Considered<br /><em>in every detail.</em></h4>
+				</div>
+				<div class="tzy-perfume-detail-grid">
+					<figure class="tzy-perfume-detail" data-perfume-card>
+						<div class="tzy-perfume-detail-image">
+							<img
+								src={withBase("/images/tzy-perfume/05-bottle-detail.png")}
+								alt="Close detail of a TZY perfume bottle cap and glass"
+								width="290"
+								height="197"
+								loading="lazy"
+								decoding="async"
+								data-tshirt-image
+							/>
+						</div>
+						<figcaption>BOTTLE / GLASS DETAIL</figcaption>
+					</figure>
+					<figure class="tzy-perfume-detail" data-perfume-card>
+						<div class="tzy-perfume-detail-image">
+							<img
+								src={withBase("/images/tzy-perfume/06-fragrance-box.png")}
+								alt="Ivory TZY fragrance presentation box"
+								width="315"
+								height="197"
+								loading="lazy"
+								decoding="async"
+								data-tshirt-image
+							/>
+						</div>
+						<figcaption>THE FRAGRANCE BOX</figcaption>
+					</figure>
+					<figure class="tzy-perfume-detail" data-perfume-card>
+						<div class="tzy-perfume-detail-image">
+							<img
+								src={withBase("/images/tzy-perfume/07-gift-presentation.png")}
+								alt="TZY perfume presented in a signature gift box"
+								width="375"
+								height="197"
+								loading="lazy"
+								decoding="async"
+								data-tshirt-image
+							/>
+						</div>
+						<figcaption>GIFT PRESENTATION</figcaption>
+					</figure>
+					<figure class="tzy-perfume-detail" data-perfume-card>
+						<div class="tzy-perfume-detail-image">
+							<img
+								src={withBase("/images/tzy-perfume/09-lumiere-detail.png")}
+								alt="Close detail of the TZY LUMIÈRE perfume bottle"
+								width="306"
+								height="197"
+								loading="lazy"
+								decoding="async"
+								data-tshirt-image
+							/>
+						</div>
+						<figcaption>LUMIÈRE / SIGNATURE</figcaption>
+					</figure>
+				</div>
+			</div>
 		</div>
-		<p class="image-essay-note">Self-hosted editorial references. No image represents the owner or a personal outfit.</p>
+
+		<footer class="tshirt-exhibition-closing">
+			<div class="tshirt-closing-pair">
+				<figure class="tshirt-closing-view tshirt-front" data-tshirt-parallax>
+					<div class="tshirt-garment-window">
+						<img
+							src={withBase("/images/tzy-noir-botanica.png")}
+							alt="Noir Botanica TZY T-shirt, front view"
+							width="1536"
+							height="1024"
+							loading="lazy"
+							decoding="async"
+							data-tshirt-image
+						/>
+					</div>
+				</figure>
+				<figure class="tshirt-closing-view tshirt-ivory-front" data-tshirt-parallax>
+					<div class="tshirt-garment-window">
+						<img
+							src={withBase("/images/tzy-ivory-bloom.png")}
+							alt="Ivory Bloom TZY T-shirt, front view"
+							width="1536"
+							height="1024"
+							loading="lazy"
+							decoding="async"
+							data-tshirt-image
+						/>
+					</div>
+				</figure>
+			</div>
+			<div class="tshirt-closing-copy">
+				<p class="tshirt-exhibition-eyebrow">TZY SIGNATURE SERIES / 001–002</p>
+				<h3>Two Tones.<br /><em>One Signature.</em></h3>
+				<p>Different expressions, united by a singular vision of style.</p>
+				<span>TZY — STYLE BEYOND THE SEEN.</span>
+			</div>
+		</footer>
 	</section>
 
 	<section class="campaign-feature" data-reveal aria-labelledby="campaign-title">
 		<img
-			src={withBase(editorialImages[1].src)}
-			alt={editorialImages[1].alt}
+			src={withBase(editorialImages[3].src)}
+			alt={editorialImages[3].alt}
 			data-image-mask
 			width="960"
 			height="1200"

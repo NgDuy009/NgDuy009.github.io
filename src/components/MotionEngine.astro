@@ -41,28 +41,237 @@
 
 		motionQueries.add("(prefers-reduced-motion: no-preference)", () => {
 			const heroImage = document.querySelector<HTMLImageElement>(".maison-hero-image");
-			const heroTitle = document.querySelector<HTMLElement>("[data-hero-title]");
+			const heroCopy = document.querySelector<HTMLElement>(".maison-hero-copy");
 
-			if (heroImage && heroTitle) {
+			if (heroImage && heroCopy) {
 				const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
 				intro
 					.fromTo(
 						heroImage,
-						{ scale: 1.1, filter: "brightness(0.78)", clipPath: "inset(4% 3% 4% 3%)" },
-						{ scale: 1, filter: "brightness(1)", clipPath: "inset(0% 0% 0% 0%)", duration: 1.65 },
+						{ scale: 1.06, clipPath: "inset(4% 3% 4% 3%)" },
+						{ scale: 1.018, clipPath: "inset(0% 0% 0% 0%)", duration: 1.65 },
 						0,
 					)
+					.to(heroImage, { scale: 1.05, duration: 32, ease: "none", delay: 1.65 }, 0)
 					.fromTo(".maison-hero-shade", { autoAlpha: 0.5 }, { autoAlpha: 1, duration: 1.1 }, 0)
-					.fromTo(".maison-hero-inset", { autoAlpha: 0, y: 24, scale: 0.985 }, { autoAlpha: 1, y: 0, scale: 1, duration: 1.1 }, 0.2)
-					.fromTo(".maison-kicker", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.85 }, 0.32)
 					.fromTo(
-						heroTitle.querySelectorAll<HTMLElement>(".hero-title-line"),
-						{ autoAlpha: 0, yPercent: 35 },
-						{ autoAlpha: 1, yPercent: 0, duration: 1.15, stagger: 0.12 },
-						0.44,
+						"[data-hero-logo]",
+						{ autoAlpha: 0, y: 8, filter: "invert(1) blur(9px)" },
+						{ autoAlpha: 1, y: 0, filter: "invert(1) blur(0px)", duration: 1.1 },
+						0.2,
 					)
-					.fromTo(".maison-tagline", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.85 }, 0.68)
-					.fromTo(".maison-hero-link", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.82);
+					.fromTo("[data-hero-kicker]", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.38)
+					.fromTo(
+						"[data-hero-line]",
+						{ autoAlpha: 0, y: 20 },
+						{ autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.14 },
+						0.48,
+					)
+					.fromTo(
+						"[data-hero-description]",
+						{ autoAlpha: 0, y: 12 },
+						{ autoAlpha: 1, y: 0, duration: 0.8 },
+						0.78,
+					)
+					.fromTo("[data-hero-cta]", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.92)
+					.fromTo("[data-hero-meta]", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9 }, 0.9);
+			}
+
+			const signatureSection = document.querySelector<HTMLElement>(".signature-editorial");
+			const signatureImage = document.querySelector<HTMLImageElement>("[data-signature-image]");
+
+			if (signatureSection && signatureImage) {
+				gsap.timeline({
+					defaults: { ease: "power3.out" },
+					scrollTrigger: {
+						trigger: signatureSection,
+						start: "top 74%",
+						once: true,
+					},
+				})
+					.fromTo(
+						signatureImage,
+						{ clipPath: "inset(5% 0% 5% 0%)", scale: 1.035 },
+						{ clipPath: "inset(0% 0% 0% 0%)", scale: 1.015, duration: 1.45 },
+						0,
+					)
+					.to(signatureImage, { scale: 1.03, duration: 12, ease: "none" }, 1.45)
+					.fromTo("[data-signature-kicker]", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.15)
+					.fromTo(
+						"[data-signature-line]",
+						{ autoAlpha: 0, y: 22 },
+						{ autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.14 },
+						0.26,
+					)
+					.fromTo(
+						"[data-signature-product]",
+						{ autoAlpha: 0, y: 12 },
+						{ autoAlpha: 1, y: 0, duration: 0.75 },
+						0.55,
+					)
+					.fromTo("[data-signature-rule]", { scaleX: 0 }, { scaleX: 1, duration: 0.8 }, 0.58)
+					.fromTo(
+						"[data-signature-copy]",
+						{ autoAlpha: 0, y: 14 },
+						{ autoAlpha: 1, y: 0, duration: 0.8 },
+						0.68,
+					)
+					.fromTo(
+						"[data-signature-details] li",
+						{ autoAlpha: 0, y: 10 },
+						{ autoAlpha: 1, y: 0, duration: 0.65, stagger: 0.08 },
+						0.82,
+					)
+					.fromTo(
+						"[data-signature-tagline]",
+						{ autoAlpha: 0, y: 10 },
+						{ autoAlpha: 1, y: 0, duration: 0.75 },
+						1.12,
+					)
+					.fromTo(
+						"[data-signature-caption]",
+						{ autoAlpha: 0, y: 8 },
+						{ autoAlpha: 1, y: 0, duration: 0.75 },
+						0.92,
+					);
+			}
+
+			const knitwearCollection = document.querySelector<HTMLElement>("[data-knitwear-editorial]");
+			const knitwearCollectionImage = document.querySelector<HTMLImageElement>("[data-knitwear-image]");
+
+			if (knitwearCollection && knitwearCollectionImage) {
+				const collectionTrigger = {
+					trigger: knitwearCollection,
+					start: "top 78%",
+					once: true,
+				};
+
+				gsap.timeline({ scrollTrigger: collectionTrigger })
+					.fromTo(
+						knitwearCollectionImage,
+						{ clipPath: "inset(5% 0% 5% 0%)", scale: 1.035 },
+						{ clipPath: "inset(0% 0% 0% 0%)", scale: 1, duration: 1.4, ease: "power3.out" },
+					)
+					.to(knitwearCollectionImage, { scale: 1.025, duration: 12, ease: "none" });
+
+				gsap.timeline({ scrollTrigger: collectionTrigger })
+					.fromTo("[data-knitwear-kicker]", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.75 })
+					.fromTo(
+						"[data-knitwear-line]",
+						{ autoAlpha: 0, y: 20 },
+						{ autoAlpha: 1, y: 0, duration: 0.85, stagger: 0.14 },
+						0.12,
+					)
+					.fromTo("[data-knitwear-rule]", { scaleX: 0 }, { scaleX: 1, duration: 0.8 }, 0.38)
+					.fromTo(
+						"[data-knitwear-description]",
+						{ autoAlpha: 0, y: 12 },
+						{ autoAlpha: 1, y: 0, duration: 0.75 },
+						0.48,
+					)
+					.fromTo(
+						"[data-knitwear-details] li",
+						{ autoAlpha: 0, y: 9 },
+						{ autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08 },
+						0.64,
+					)
+					.fromTo(
+						"[data-knitwear-tagline]",
+						{ autoAlpha: 0, y: 9 },
+						{ autoAlpha: 1, y: 0, duration: 0.7 },
+						0.92,
+					);
+			}
+
+			const tshirtExhibition = document.querySelector<HTMLElement>("[data-tshirt-exhibition]");
+
+			if (tshirtExhibition) {
+				const observeTshirtElements = (
+					elements: HTMLElement[],
+					animate: (element: HTMLElement) => void,
+				) => {
+					const observer = new IntersectionObserver(
+						(entries, currentObserver) => {
+							entries.forEach(({ isIntersecting, target }) => {
+								if (!isIntersecting) return;
+								currentObserver.unobserve(target);
+								if (target instanceof HTMLElement) {
+									animate(target);
+								}
+							});
+						},
+						{ rootMargin: "0px 0px -8% 0px" },
+					);
+					elements.forEach((element) => observer.observe(element));
+				};
+
+				const tshirtIntro = tshirtExhibition.querySelector<HTMLElement>(".tshirt-exhibition-intro");
+				if (tshirtIntro) {
+					observeTshirtElements([tshirtIntro], (intro) => {
+						gsap.timeline({ defaults: { ease: "power3.out" } })
+							.fromTo(
+								intro.querySelectorAll("[data-tshirt-copy]"),
+								{ autoAlpha: 0, y: 14 },
+								{ autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12 },
+							)
+							.fromTo(
+								intro.querySelectorAll("[data-tshirt-line]"),
+								{ autoAlpha: 0, y: 24 },
+								{ autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.15 },
+								0.12,
+							)
+							.fromTo(
+								intro.querySelector("[data-tshirt-rule]"),
+								{ scaleX: 0 },
+								{ scaleX: 1, duration: 0.85 },
+								0.4,
+							);
+					});
+				}
+
+				const tshirtImages = Array.from(tshirtExhibition.querySelectorAll<HTMLElement>("[data-tshirt-image]"));
+				observeTshirtElements(tshirtImages, (image) => {
+					gsap.fromTo(
+						image,
+						{ clipPath: "inset(5% 0% 5% 0%)", scale: 1.025 },
+						{
+							clipPath: "inset(0% 0% 0% 0%)",
+							scale: 1,
+							duration: 1.2,
+							ease: "power3.out",
+						},
+					);
+				});
+
+				const perfumeCards = Array.from(
+					tshirtExhibition.querySelectorAll<HTMLElement>(".tzy-perfume-exhibition [data-perfume-card]"),
+				);
+				observeTshirtElements(perfumeCards, (card) => {
+					gsap.fromTo(
+						card,
+						{ autoAlpha: 0, y: 18 },
+						{
+							autoAlpha: 1,
+							y: 0,
+							duration: 0.75,
+							delay: (perfumeCards.indexOf(card) % 4) * 0.07,
+							ease: "power3.out",
+						},
+					);
+				});
+
+				const tshirtCopyBlocks = Array.from(
+					tshirtExhibition.querySelectorAll<HTMLElement>(
+						".tshirt-look-copy, .tshirt-detail-heading, .tzy-perfume-details-heading, .tshirt-closing-copy",
+					),
+				);
+				observeTshirtElements(tshirtCopyBlocks, (copy) => {
+					gsap.fromTo(
+						Array.from(copy.children),
+						{ autoAlpha: 0, y: 16 },
+						{ autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out" },
+					);
+				});
 			}
 
 			gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((item) => {
@@ -106,7 +315,9 @@
 		});
 
 		motionQueries.add("(min-width: 900px)", () => {
-			const parallaxTweens = gsap.utils.toArray<HTMLElement>("[data-story-parallax]").map((image) =>
+			const parallaxTweens = gsap.utils.toArray<HTMLElement>(
+				"[data-story-parallax], [data-signature-parallax], [data-knitwear-collection-parallax], [data-tshirt-parallax]",
+			).map((image) =>
 				gsap.to(image, {
 					yPercent: -4,
 					ease: "none",

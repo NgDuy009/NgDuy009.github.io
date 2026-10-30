@@ -5,7 +5,7 @@ const links = [
 	{ label: "Maison", href: withBase("/about/") },
 	{ label: "Collections", href: withBase("/collections/") },
 	{ label: "Journal", href: withBase("/posts/") },
-	{ label: "Visual Archive", href: withBase("/gallery/") },
+	{ label: "Archive", href: withBase("/gallery/") },
 	{ label: "Contact", href: withBase("/contact/") },
 ];
 
@@ -14,7 +14,9 @@ const currentPath = withBase(Astro.url.pathname);
 
 <header class="site-header">
 	<nav class="container nav-shell" aria-label="Main navigation">
-		<a class="wordmark" href={withBase("/")} aria-label="DARK TZY — Home">DARK TZY<span class="wordmark-period">.</span></a>
+		<a class="brand-mark brand-mark-header" href={withBase("/")} aria-label="DARK TZY — Home">
+			<img src={withBase("/images/tzy-monogram.png")} alt="" width="1254" height="1254" decoding="async" />
+		</a>
 		<details class="nav-menu">
 			<summary class="nav-toggle" aria-label="Toggle navigation">
 				<span>MENU</span>

@@ -37,18 +37,6 @@
 	gap: 40px;
 }
 
-.wordmark {
-	flex: 0 0 auto;
-	font-family: var(--font-display);
-	font-size: 1rem;
-	font-weight: 650;
-	letter-spacing: 0.08em;
-}
-
-.wordmark span {
-	color: var(--neon);
-}
-
 .nav-menu {
 	margin-left: auto;
 }
@@ -124,13 +112,6 @@
 
 .footer-inner p:last-child {
 	text-align: right;
-}
-
-.footer-wordmark {
-	justify-self: start;
-	color: var(--text);
-	font-family: var(--font-display);
-	font-size: 0.88rem;
 }
 
 @media (max-width: 900px) {
