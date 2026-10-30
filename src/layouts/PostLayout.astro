@@ -14,6 +14,11 @@ interface NeighborPost {
 	href: string;
 }
 
+interface RelatedPost extends NeighborPost {
+	description: string;
+	pubDate: Date;
+}
+
 interface Props {
 	title: string;
 	description: string;
@@ -27,6 +32,7 @@ interface Props {
 	headings: Heading[];
 	previousPost?: NeighborPost;
 	nextPost?: NeighborPost;
+	relatedPosts: RelatedPost[];
 	canonicalUrl?: string;
 }
 
@@ -43,6 +49,7 @@ const {
 	headings,
 	previousPost,
 	nextPost,
+	relatedPosts,
 	canonicalUrl,
 } = Astro.props;
 ---
@@ -57,6 +64,7 @@ const {
 	publishedTime={pubDate}
 	updatedTime={updatedDate}
 >
+	<progress class="reading-progress" data-reading-progress max="100" value="0" aria-label="Article reading progress">0%</progress>
 	<article class="article-shell">
 		<header class="article-header" data-reveal>
 			<a class="article-back-link" href={withBase("/posts/")}>← All journal entries</a>
@@ -126,5 +134,44 @@ const {
 				</a>
 			)}
 		</nav>
+
+		{relatedPosts.length > 0 && (
+			<aside class="related-stories" aria-labelledby="related-stories-title">
+				<p class="eyebrow">CONTINUE READING</p>
+				<h2 id="related-stories-title">In the same <em>conversation.</em></h2>
+				<div class="related-stories-grid">
+					{relatedPosts.map((relatedPost, index) => (
+						<a class="related-story" href={withBase(relatedPost.href)}>
+							<span>0{index + 1} / {formatDate(relatedPost.pubDate)}</span>
+							<strong>{relatedPost.title}</strong>
+							<p>{relatedPost.description}</p>
+							<span class="related-story-arrow" aria-hidden="true">↗</span>
+						</a>
+					))}
+				</div>
+			</aside>
+		)}
 	</article>
+	<script>
+		const article = document.querySelector<HTMLElement>(".article-shell");
+		const progress = document.querySelector<HTMLProgressElement>("[data-reading-progress]");
+		if (article && progress) {
+			let frame = 0;
+			const updateProgress = () => {
+				if (frame) return;
+				frame = requestAnimationFrame(() => {
+					const scrollableHeight = Math.max(
+						1,
+						article.offsetTop + article.offsetHeight - window.innerHeight,
+					);
+					progress.value = Math.min(100, Math.max(0, (window.scrollY / scrollableHeight) * 100));
+					frame = 0;
+				});
+			};
+
+			window.addEventListener("scroll", updateProgress, { passive: true });
+			window.addEventListener("resize", updateProgress, { passive: true });
+			updateProgress();
+		}
+	</script>
 </BaseLayout>

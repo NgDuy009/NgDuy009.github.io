@@ -6,6 +6,7 @@
 	--surface: #191815;
 	--surface-hover: #24221e;
 	--ivory: #f3f0e9;
+	--champagne: #c7b79e;
 	--text: #f3f0e9;
 	--text-muted: #c2beb6;
 	--text-subtle: #a39f97;
@@ -13,8 +14,8 @@
 	--ink-muted: #635f59;
 	--border: rgb(243 240 233 / 15%);
 	--border-strong: rgb(243 240 233 / 28%);
-	--neon: #c8ff3d;
-	--neon-soft: rgb(200 255 61 / 9%);
+	--neon: var(--champagne);
+	--neon-soft: rgb(199 183 158 / 9%);
 	--font-display: "Cormorant Garamond Variable", "Times New Roman", serif;
 	--font-body: "Inter Variable", Inter, "Segoe UI", sans-serif;
 	--font-mono: "Inter Variable", Inter, sans-serif;

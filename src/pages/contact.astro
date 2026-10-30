@@ -16,16 +16,22 @@ import { withBase } from "../lib/urls";
 				social links have not been supplied for publication yet.
 			</p>
 		</header>
-		<div class="contact-note" data-reveal>
-			<span class="contact-note-mark" aria-hidden="true">✳</span>
-			<div>
-				<p class="eyebrow">NO PLACEHOLDER FORM</p>
-				<h2>When there's a way to reach out, it will be here.</h2>
-				<p>
-					This page will only list contact details after they are confirmed.
-					There is no simulated message form or unmonitored inbox.
-				</p>
-				<a class="text-link" href={withBase("/about/")}>A little about this space <span aria-hidden="true">↗</span></a>
+		<div class="contact-aside" data-reveal>
+			<figure class="contact-image">
+				<img src={withBase("/images/editorial-wardrobe.webp")} alt="A considered wardrobe of jackets, knitwear, and accessories on a rail." width="960" height="1200" loading="lazy" decoding="async" />
+				<figcaption>Editorial reference / Unsplash · Not a personal wardrobe.</figcaption>
+			</figure>
+			<div class="contact-note">
+				<span class="contact-note-mark" aria-hidden="true">✳</span>
+				<div>
+					<p class="eyebrow">A REAL CHANNEL, WHEN READY</p>
+					<h2>When there's a way to reach out, it will be here.</h2>
+					<p>
+						This page will only list contact details after they are confirmed.
+						There is no simulated message form or unmonitored inbox.
+					</p>
+					<a class="text-link" href={withBase("/about/")}>A little about this space <span aria-hidden="true">↗</span></a>
+				</div>
 			</div>
 		</div>
 	</section>

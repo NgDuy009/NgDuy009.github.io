@@ -30,8 +30,14 @@
 
 		image.src = trigger.dataset.imageSrc ?? "";
 		image.alt = trigger.dataset.imageAlt ?? "";
+		image.classList.remove("is-visible");
+		image.onload = () => image.classList.add("is-visible");
+		image.onerror = () => image.classList.remove("is-visible");
 		if (caption) caption.textContent = trigger.dataset.imageCaption ?? "";
 		position.textContent = `${String(currentIndex + 1).padStart(2, "0")} / ${String(triggers.length).padStart(2, "0")}`;
+		if (image.complete && image.naturalWidth > 0) {
+			requestAnimationFrame(() => image.classList.add("is-visible"));
+		}
 	};
 
 	for (const [index, trigger] of triggers.entries()) {

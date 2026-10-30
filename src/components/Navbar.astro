@@ -2,10 +2,10 @@
 import { withBase } from "../lib/urls";
 
 const links = [
-	{ label: "About", href: withBase("/about/") },
+	{ label: "Maison", href: withBase("/about/") },
 	{ label: "Collections", href: withBase("/collections/") },
 	{ label: "Journal", href: withBase("/posts/") },
-	{ label: "Gallery", href: withBase("/gallery/") },
+	{ label: "Visual Archive", href: withBase("/gallery/") },
 	{ label: "Contact", href: withBase("/contact/") },
 ];
 
@@ -30,7 +30,7 @@ const currentPath = withBase(Astro.url.pathname);
 						{label}
 					</a>
 				))}
-				<a class="nav-contact-mark" href={withBase("/contact/")} aria-label="Contact DARK TZY">↗</a>
+				<a class="nav-contact-mark" data-magnetic href={withBase("/contact/")} aria-label="Contact DARK TZY">↗</a>
 			</div>
 		</details>
 	</nav>

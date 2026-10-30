@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import CollectionCard from "../../components/CollectionCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { withBase } from "../../lib/urls";
+import { editorialImages } from "../../lib/editorial";
 
 const collections = await getCollection("collections");
 const categories = [...new Set(collections.map(({ data }) => data.category))].sort();
@@ -35,7 +36,7 @@ const categories = [...new Set(collections.map(({ data }) => data.category))].so
 		{collections.length > 0 ? (
 			<div class="editorial-collection-grid" data-collection-grid>
 				{collections.map((collection, index) => (
-					<div data-collection-card data-category={collection.data.category}>
+					<div data-collection-card data-category={collection.data.category} data-reveal>
 						<CollectionCard
 							title={collection.data.title}
 							description={collection.data.description}
@@ -50,13 +51,23 @@ const categories = [...new Set(collections.map(({ data }) => data.category))].so
 			</div>
 		) : (
 			<div class="archive-empty" data-reveal>
-				<p class="eyebrow">A QUIET BEGINNING</p>
-				<h2>No personal looks<br /><em>have been published yet.</em></h2>
-				<p>
-					This archive is ready for owner-confirmed collections. It will not
-					present editorial references as personal outfits.
-				</p>
-				<a class="text-link" href={withBase("/gallery/")}>Browse the visual journal <span aria-hidden="true">↗</span></a>
+				<div class="archive-empty-copy">
+					<p class="eyebrow">A QUIET BEGINNING</p>
+					<h2>Personal collections,<br /><em>when they are ready.</em></h2>
+					<p>
+						No owner-approved outfits have been published. Until then, this
+						archive stays open rather than presenting references as personal looks.
+					</p>
+					<a class="text-link" href={withBase("/gallery/")}>Explore the visual archive <span aria-hidden="true">↗</span></a>
+				</div>
+				<div class="archive-moodboard" aria-label="Editorial reference imagery, not personal outfits">
+					{editorialImages.slice(0, 3).map((image, index) => (
+						<a href={withBase("/gallery/")} aria-label={`View reference image: ${image.caption}`}>
+							<img src={withBase(image.src)} alt={image.alt} data-image-mask width="960" height="1200" loading="lazy" decoding="async" />
+							<span>0{index + 1} / {image.caption}</span>
+						</a>
+					))}
+				</div>
 			</div>
 		)}
 	</section>

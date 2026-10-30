@@ -32,8 +32,11 @@ coverAlt: "A concise description of the image"
 
 Required fields are `title`, `description`, and `pubDate`. The schema validates
 dates and types during the build. `updatedDate`, `tags`, `category`, `cover`,
-and `coverAlt` are optional; `draft` defaults to `false`. Add `coverAlt` when
-using a cover so screen-reader users understand its content.
+`coverAlt`, and `featured` are optional; `draft` and `featured` default to
+`false`. The Journal features the newest published story unless a post is
+explicitly marked `featured: true`; use that flag only to pin a deliberate
+editorial selection. Add `coverAlt` when using a cover so screen-reader users
+understand its content.
 
 The filename becomes the post URL:
 
@@ -179,6 +182,32 @@ github: "https://github.com/owner/repository"
 
 Only include links that are real and verified. Label visual-only work as a
 prototype or mockup, not as an integrated AI or API demo.
+
+## Fashion collections
+
+Create an owner-approved collection in `src/content/collections/` as a Markdown
+file. Its required `cover` and `coverAlt` form the collection's lead image.
+Use `layout` to choose the image story arrangement; it defaults to `masonry`:
+
+```yaml
+---
+title: "A collection title"
+description: "A concise, accurate introduction to this collection."
+category: "Style study"
+layout: "diptych"
+cover: "/images/collection-cover.webp"
+coverAlt: "A description of the collection image"
+images:
+  - src: "/images/collection-detail.webp"
+    alt: "A description of the detail image"
+    caption: "Optional image caption"
+---
+
+Write the collection story here in Markdown.
+```
+
+Available layouts are `masonry`, `panorama`, and `diptych`. Include only
+verified, owner-approved imagery and collection information.
 
 Only add real project, contact, and external-link information that has been
 confirmed. Cover paths use `/images/...`; Markdown body images should use relative paths

@@ -148,7 +148,7 @@
 .project-card.is-linked:hover,
 .post-card.is-linked:hover {
 	transform: translateY(-3px);
-	border-color: rgb(200 255 61 / 38%);
+	border-color: rgb(199 183 158 / 38%);
 	background-color: var(--surface);
 }
 

@@ -23,21 +23,34 @@ const featuredCollections = (await getCollection("collections", ({ data }) => da
 			src={withBase(editorialImages[0].src)}
 			alt={editorialImages[0].alt}
 			data-image-mask
+			data-story-parallax
 			width="1200"
 			height="1500"
 			fetchpriority="high"
 			decoding="async"
 		/>
 		<div class="maison-hero-shade"></div>
+		<figure class="maison-hero-inset" aria-label="Fashion campaign study">
+			<img
+				src={withBase(editorialImages[1].src)}
+				alt={editorialImages[1].alt}
+				width="960"
+				height="1200"
+				fetchpriority="high"
+				decoding="async"
+			/>
+			<figcaption><span>CAMPAIGN STUDY / 02</span><span>UNSPLASH EDITORIAL REFERENCE</span></figcaption>
+		</figure>
 		<div class="maison-hero-copy">
-			<p class="maison-kicker" data-hero-stagger>Personal fashion · Visual culture</p>
-			<h1 id="home-title" data-hero-title>DARK <em>TZY</em></h1>
+			<p class="maison-kicker" data-hero-stagger>Maison personnelle · Fashion & visual culture</p>
+			<h1 id="home-title" data-hero-title><span class="hero-title-line">DARK</span> <em class="hero-title-line">TZY</em></h1>
 			<p class="maison-tagline" data-hero-stagger>The Art of Individuality.</p>
-			<a class="text-link maison-hero-link" data-magnetic href={withBase("/collections/")}>
-				Enter the collections <span aria-hidden="true">↗</span>
+			<a class="text-link maison-hero-link" data-magnetic href={withBase("/gallery/")}>
+				Enter the visual archive <span aria-hidden="true">↗</span>
 			</a>
 		</div>
-		<p class="maison-hero-caption">IMAGE / UNSPLASH&nbsp;&nbsp; · &nbsp;&nbsp;A STUDY IN FORM</p>
+		<p class="maison-hero-caption">CAMPAIGN 01 &nbsp;·&nbsp; EDITORIAL REFERENCES / UNSPLASH</p>
+		<p class="maison-hero-edition">PERSONAL STYLE<br />IN A DIFFERENT LIGHT</p>
 		<a class="hero-scroll" href="#editorial-note"><span></span>Scroll to discover</a>
 	</section>
 
@@ -76,13 +89,45 @@ const featuredCollections = (await getCollection("collections", ({ data }) => da
 				))}
 			</div>
 		) : (
-			<div class="collection-empty maison-empty">
-				<p class="eyebrow">THE ARCHIVE IS OPEN</p>
-				<h2>The personal collections<br />will arrive in their own time.</h2>
-				<p>No looks or personal pieces have been published yet.</p>
-				<a class="text-link" href={withBase("/collections/")}>Explore the archive <span aria-hidden="true">↗</span></a>
+			<div class="collection-opener">
+				<a class="collection-opener-image" href={withBase("/gallery/")} aria-label="Open the visual archive">
+					<img src={withBase(editorialImages[2].src)} alt={editorialImages[2].alt} data-image-mask width="960" height="1200" loading="lazy" decoding="async" />
+					<span>01 / FORM & LIGHT</span>
+				</a>
+				<div class="collection-opener-copy">
+					<p class="eyebrow">A PERSONAL ARCHIVE, GATHERED OVER TIME</p>
+					<h2>Considered.<br /><em>Never prescribed.</em></h2>
+					<p>
+						An open visual index for fashion, silhouette, and detail. These are
+						editorial references—not personal looks or claimed collections.
+					</p>
+					<a class="text-link" href={withBase("/collections/")}>Discover the collection archive <span aria-hidden="true">↗</span></a>
+				</div>
+				<a class="collection-opener-image collection-opener-image-offset" href={withBase("/gallery/")} aria-label="View more editorial reference images">
+					<img src={withBase(editorialImages[4].src)} alt={editorialImages[4].alt} data-image-mask width="960" height="1200" loading="lazy" decoding="async" />
+					<span>02 / THE QUIET EDIT</span>
+				</a>
 			</div>
 		)}
+	</section>
+
+	<section class="home-image-essay" data-reveal aria-labelledby="image-essay-title">
+		<header class="image-essay-heading">
+			<p class="eyebrow">AN OPEN MOODBOARD / UNSPLASH REFERENCES</p>
+			<h2 id="image-essay-title">The shape<br />of <em>a feeling.</em></h2>
+			<a class="text-link" href={withBase("/gallery/")}>View all images <span aria-hidden="true">↗</span></a>
+		</header>
+		<div class="image-essay-viewport" data-horizontal-viewport tabindex="0" role="region" aria-label="Horizontal fashion editorial image archive">
+			<div class="image-essay-track" data-horizontal-track>
+				{editorialImages.map((image, index) => (
+					<a class="image-essay-frame" href={withBase("/gallery/")} aria-label={`View visual archive: ${image.caption}`}>
+						<img src={withBase(image.src)} alt={image.alt} data-image-mask width="960" height="1200" loading="lazy" decoding="async" />
+						<span>{String(index + 1).padStart(2, "0")} &nbsp; / &nbsp; {image.caption}</span>
+					</a>
+				))}
+			</div>
+		</div>
+		<p class="image-essay-note">Self-hosted editorial references. No image represents the owner or a personal outfit.</p>
 	</section>
 
 	<section class="campaign-feature" data-reveal aria-labelledby="campaign-title">

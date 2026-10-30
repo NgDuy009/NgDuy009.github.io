@@ -4,9 +4,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PostCard from "../../components/PostCard.astro";
 import { calculateReadingTime } from "../../lib/content";
 import { withBase } from "../../lib/urls";
+import { editorialImages } from "../../lib/editorial";
 
 const posts = (await getCollection("posts", ({ data }) => !data.draft))
 	.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
+const remainingPosts = posts.filter((post) => post.id !== featuredPost?.id);
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
 	a.localeCompare(b),
 );
@@ -28,21 +31,54 @@ const searchIndexJson = JSON.stringify(searchIndex)
 	title="Journal — DARK TZY"
 	description="Fashion, visual culture, and personal notes from the DARK TZY journal."
 >
-	<section class="page-shell">
-		<header class="page-heading" data-reveal>
-			<div class="page-heading-main">
+	<section class="page-shell journal-page">
+		<header class="journal-masthead" data-reveal>
+			<div class="journal-heading-copy">
 				<p class="eyebrow">JOURNAL / IDEAS IN MOTION</p>
 				<h1>Notes on<br /><em>getting dressed.</em></h1>
 				<p class="page-heading-description">
 					Stories on fashion, personal style, and the visual culture around us.
 				</p>
+				<p class="journal-image-credit">FASHION & VISUAL CULTURE / AN OPEN JOURNAL</p>
 			</div>
-			<div class="page-index"><strong>{String(posts.length).padStart(2, "0")}</strong><span>Stories</span><span>Published</span></div>
+			<figure class="journal-masthead-image">
+				<img src={withBase(editorialImages[3].src)} alt={editorialImages[3].alt} data-image-mask width="960" height="1200" fetchpriority="high" decoding="async" />
+				<figcaption>Editorial reference / Unsplash · Not a portrait of the site owner.</figcaption>
+			</figure>
 		</header>
 		<div class="collection-bar">
-			<span>All stories</span>
+			<span>{featuredPost ? "Featured story & archive" : "All stories"}</span>
 			<span>Journal / <strong data-post-count>{posts.length}</strong></span>
 		</div>
+
+		{featuredPost && (
+			<article class="featured-journal-story" data-post-card={featuredPost.id} data-reveal>
+				{featuredPost.data.cover && (
+					<a class="featured-journal-image" href={withBase(`/posts/${featuredPost.id}/`)} aria-label={`Read ${featuredPost.data.title}`}>
+						<img
+							src={withBase(featuredPost.data.cover)}
+							alt={featuredPost.data.coverAlt ?? featuredPost.data.title}
+							width="1200"
+							height="900"
+							fetchpriority="high"
+							decoding="async"
+						/>
+					</a>
+				)}
+				<div class="featured-journal-copy">
+					<p class="eyebrow">FEATURED STORY / {featuredPost.data.category ?? "JOURNAL"}</p>
+					<h2><a href={withBase(`/posts/${featuredPost.id}/`)}>{featuredPost.data.title}</a></h2>
+					<p>{featuredPost.data.description}</p>
+					<div class="featured-journal-meta">
+						<time datetime={featuredPost.data.pubDate.toISOString()}>
+							{new Intl.DateTimeFormat("en", { day: "numeric", month: "long", year: "numeric" }).format(featuredPost.data.pubDate)}
+						</time>
+						<span>{calculateReadingTime(featuredPost.body ?? "")}</span>
+					</div>
+					<a class="text-link" href={withBase(`/posts/${featuredPost.id}/`)}>Read the story <span aria-hidden="true">↗</span></a>
+				</div>
+			</article>
+		)}
 
 		<div class="post-search" data-reveal>
 			<label class="post-search-label" for="post-search-input">SEARCH THE ARCHIVE</label>
@@ -68,9 +104,9 @@ const searchIndexJson = JSON.stringify(searchIndex)
 		</div>
 
 		<div class="collection-body" data-reveal>
-			{posts.length > 0 ? (
+			{remainingPosts.length > 0 ? (
 				<div class="post-grid">
-					{posts.map((post) => (
+					{remainingPosts.map((post) => (
 						<div data-post-card={post.id} data-reveal>
 							<PostCard
 								title={post.data.title}
@@ -84,7 +120,7 @@ const searchIndexJson = JSON.stringify(searchIndex)
 						</div>
 					))}
 				</div>
-			) : (
+			) : posts.length === 0 ? (
 				<div class="collection-empty">
 					<span class="collection-empty-index">VOL. 00</span>
 					<div>
@@ -95,7 +131,7 @@ const searchIndexJson = JSON.stringify(searchIndex)
 						</p>
 					</div>
 				</div>
-			)}
+			) : <p class="journal-archive-note">The archive begins with the featured story above.</p>}
 			<p class="search-empty" data-search-empty hidden>No stories match this search.</p>
 			<p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
 		</div>

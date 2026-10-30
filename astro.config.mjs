@@ -1,7 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-const generatedSeoRoutes = () => ({
+/** @type {import("astro").AstroIntegration} */
+const generatedSeoRoutes = {
   name: "dark-tzy-seo-routes",
   hooks: {
     "astro:config:setup": ({ injectRoute }) => {
@@ -16,17 +17,19 @@ const generatedSeoRoutes = () => ({
       });
     },
   },
-});
+};
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://ngduy009.github.io",
-  base: "/darktzy",
+  base: "/",
   output: "static",
-  integrations: [generatedSeoRoutes()],
+  integrations: [generatedSeoRoutes],
   markdown: {
     syntaxHighlight: {
       type: "shiki",
+    },
+    shikiConfig: {
       theme: "github-dark",
     },
   },

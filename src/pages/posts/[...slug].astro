@@ -11,6 +11,23 @@ export async function getStaticPaths() {
 	return publishedPosts.map((post, index) => {
 		const previousPost = publishedPosts[index + 1];
 		const nextPost = publishedPosts[index - 1];
+		const relatedPosts = publishedPosts
+			.filter((candidate) => candidate.id !== post.id)
+			.map((candidate) => ({
+				candidate,
+				score:
+					Number(Boolean(post.data.category && post.data.category === candidate.data.category)) +
+					post.data.tags.filter((tag) => candidate.data.tags.includes(tag)).length,
+			}))
+			.filter(({ score }) => score > 0)
+			.sort((a, b) => b.score - a.score || b.candidate.data.pubDate.getTime() - a.candidate.data.pubDate.getTime())
+			.slice(0, 2)
+			.map(({ candidate }) => ({
+				title: candidate.data.title,
+				href: `/posts/${candidate.id}/`,
+				description: candidate.data.description,
+				pubDate: candidate.data.pubDate,
+			}));
 
 		return {
 			params: { slug: post.id },
@@ -22,12 +39,13 @@ export async function getStaticPaths() {
 				nextPost: nextPost
 					? { title: nextPost.data.title, href: `/posts/${nextPost.id}/` }
 					: undefined,
+				relatedPosts,
 			},
 		};
 	});
 }
 
-const { post, previousPost, nextPost } = Astro.props;
+const { post, previousPost, nextPost, relatedPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const canonicalUrl = Astro.site
 	? absoluteSiteUrl(`/posts/${post.id}/`, Astro.site)
@@ -47,6 +65,7 @@ const canonicalUrl = Astro.site
 	headings={headings}
 	previousPost={previousPost}
 	nextPost={nextPost}
+	relatedPosts={relatedPosts}
 	canonicalUrl={canonicalUrl}
 >
 	<Content />

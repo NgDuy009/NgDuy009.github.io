@@ -35,15 +35,15 @@ npm.cmd ci
 npm.cmd run build
 ```
 
-Astro is configured for the project site
-`https://ngduy009.github.io/darktzy/` with `site: "https://ngduy009.github.io"`
-and `base: "/darktzy"`. The deployment workflow builds on pushes to `main` and
-deploys `dist/` with GitHub's official Pages Actions. In the repository, select
-**Settings → Pages → Build and deployment → Source → GitHub Actions**.
+Astro is configured for the GitHub user site
+`https://ngduy009.github.io/` with `site: "https://ngduy009.github.io"` and
+`base: "/"`. The deployment workflow builds on pushes to `main` and deploys
+`dist/` with GitHub's official Pages Actions. In the `NgDuy009.github.io`
+repository, select **Settings → Pages → Build and deployment → Source → GitHub Actions**.
 
 The generated sitemap and `robots.txt`, canonical URLs, Open Graph metadata,
-favicon, and internal links all use the project-site base. The share preview
-image is `public/og-image.png`.
+favicon, and internal links use root-relative URLs for the user site. The share
+preview image is `public/og-image.png`.
 
 ## Content
 
