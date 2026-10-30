@@ -1,0 +1,38 @@
+---
+import { withBase } from "../lib/urls";
+import type { EditorialImage } from "../lib/editorial";
+
+interface Props {
+	image: EditorialImage;
+	index: number;
+}
+
+const { image, index } = Astro.props;
+---
+
+<figure class:list={["editorial-image", `is-${image.orientation}`]} data-reveal>
+	<button
+		class="editorial-image-trigger"
+		type="button"
+		data-lightbox-trigger
+		data-image-src={withBase(image.src)}
+		data-image-alt={image.alt}
+		data-image-caption={image.caption}
+		aria-label={`Open image ${index + 1}: ${image.caption}`}
+	>
+		<img
+			src={withBase(image.src)}
+			alt={image.alt}
+			data-image-mask
+			width="960"
+			height="1200"
+			loading="lazy"
+			decoding="async"
+		/>
+		<span class="editorial-image-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+	</button>
+	<figcaption>
+		<span>{image.caption}</span>
+		<span>{image.source}</span>
+	</figcaption>
+</figure>

@@ -1,6 +1,6 @@
 # Posting Guide
 
-Posts are Markdown files in `src/content/posts/`. Astro validates their
+Journal stories are Markdown files in `src/content/posts/`. Astro validates their
 frontmatter, renders them as static pages, and excludes entries marked as drafts.
 No CMS account, server, or database is required.
 
@@ -16,13 +16,13 @@ Add frontmatter at the top:
 
 ```yaml
 ---
-title: "Tiêu đề bài viết"
-description: "Tóm tắt ngắn dùng trong danh sách và kết quả tìm kiếm."
+title: "A journal story title"
+description: "A concise summary of the fashion or visual-culture story."
 pubDate: 2026-10-30
 updatedDate: 2026-10-30
 tags:
-  - technology
-  - learning
+  - personal-style
+  - visual-culture
 category: "Journal"
 draft: true
 cover: "/images/first-post-cover.webp"
@@ -47,9 +47,9 @@ Use regular Markdown for headings, paragraphs, lists, links, blockquotes, and
 tables:
 
 ```md
-## Một tiêu đề
+## Một ghi chú
 
-Đây là một đoạn văn có [liên kết](https://example.com).
+Đây là một đoạn văn về thời trang hoặc văn hóa thị giác, có [liên kết tham khảo](https://example.com).
 
 - Mục thứ nhất
 - Mục thứ hai
@@ -66,7 +66,7 @@ Code fences are syntax-highlighted with the site's Shiki theme:
 
 ````md
 ```ts
-const message: string = "Hello, DARK TZY";
+const message: string = "A detail worth noticing";
 console.log(message);
 ```
 ````

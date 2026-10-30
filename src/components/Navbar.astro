@@ -2,11 +2,10 @@
 import { withBase } from "../lib/urls";
 
 const links = [
-	{ label: "Home", href: withBase("/") },
 	{ label: "About", href: withBase("/about/") },
-	{ label: "Projects", href: withBase("/projects/") },
-	{ label: "Posts", href: withBase("/posts/") },
-	{ label: "Lab", href: withBase("/lab/") },
+	{ label: "Collections", href: withBase("/collections/") },
+	{ label: "Journal", href: withBase("/posts/") },
+	{ label: "Gallery", href: withBase("/gallery/") },
 	{ label: "Contact", href: withBase("/contact/") },
 ];
 
@@ -14,10 +13,10 @@ const currentPath = withBase(Astro.url.pathname);
 ---
 
 <header class="site-header">
-	<nav class="container nav-shell" aria-label="Điều hướng chính">
-		<a class="wordmark" href={withBase("/")} aria-label="DARK TZY — Trang chủ">DARK <span>TZY</span></a>
-		<details class="nav-menu" open>
-			<summary class="nav-toggle">
+	<nav class="container nav-shell" aria-label="Main navigation">
+		<a class="wordmark" href={withBase("/")} aria-label="DARK TZY — Home">DARK TZY<span class="wordmark-period">.</span></a>
+		<details class="nav-menu">
+			<summary class="nav-toggle" aria-label="Toggle navigation">
 				<span>MENU</span>
 				<span class="menu-icon" aria-hidden="true"></span>
 			</summary>
@@ -31,6 +30,7 @@ const currentPath = withBase(Astro.url.pathname);
 						{label}
 					</a>
 				))}
+				<a class="nav-contact-mark" href={withBase("/contact/")} aria-label="Contact DARK TZY">↗</a>
 			</div>
 		</details>
 	</nav>
@@ -38,14 +38,18 @@ const currentPath = withBase(Astro.url.pathname);
 
 <script>
 	const navMenu = document.querySelector(".nav-menu");
-	const mobileNavQuery = window.matchMedia("(max-width: 700px)");
+	const mobileNavQuery = window.matchMedia("(max-width: 760px)");
 
 	if (navMenu instanceof HTMLDetailsElement) {
 		const syncNavToViewport = () => {
 			navMenu.open = !mobileNavQuery.matches;
 		};
+		const closeOnNavigation = () => {
+			if (mobileNavQuery.matches) navMenu.open = false;
+		};
 
 		syncNavToViewport();
 		mobileNavQuery.addEventListener("change", syncNavToViewport);
+		navMenu.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeOnNavigation));
 	}
 </script>

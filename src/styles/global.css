@@ -1,13 +1,12 @@
-@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/cormorant-garamond";
 @import "@fontsource-variable/inter";
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
 @import "./tokens.css";
 @import "./layout.css";
 @import "./components.css";
 @import "./pages.css";
 @import "./motion.css";
 @import "./content.css";
+@import "./fashion.css";
 
 * {
 	box-sizing: border-box;
@@ -39,8 +38,8 @@ body {
 	background: var(--bg);
 	color: var(--text);
 	font-family: var(--font-body);
-	font-size: 16px;
-	line-height: 1.65;
+	font-size: 15px;
+	line-height: 1.7;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -60,7 +59,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 summary:focus-visible {
-	outline: 2px solid var(--neon);
+	outline: 2px solid var(--ivory);
 	outline-offset: 5px;
 }
 
@@ -77,6 +76,6 @@ svg {
 }
 
 ::selection {
-	background: var(--neon);
+	background: var(--ivory);
 	color: var(--bg);
 }

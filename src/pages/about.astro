@@ -1,52 +1,73 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { editorialImages } from "../lib/editorial";
+import { withBase } from "../lib/urls";
 ---
 
 <BaseLayout
 	title="About — DARK TZY"
-	description="Giới thiệu về DARK TZY và những chủ đề đang được khám phá."
+	description="The point of view and principles behind DARK TZY, a personal fashion and visual culture journal."
 >
-	<section class="page-shell">
-		<header class="page-heading" data-reveal>
-			<div class="page-heading-main">
-				<p class="eyebrow">ABOUT / THE PERSON BEHIND THE SIGNAL</p>
-				<h1>Intentional<br />by nature.</h1>
-				<p class="page-heading-description">
-					Một hồ sơ cá nhân được xây dựng từ những điều đang học, đang làm và
-					những câu hỏi đáng theo đuổi.
-				</p>
-			</div>
-			<div class="page-index"><strong>01</strong><span>Profile</span><span>In progress</span></div>
+	<article class="editorial-page">
+		<header class="editorial-page-heading" data-reveal>
+			<p class="eyebrow">ABOUT / THE POINT OF VIEW</p>
+			<h1>A personal<br /><em>way of seeing.</em></h1>
+			<p class="editorial-page-deck">
+				DARK TZY is a space for fashion, visual culture, and the details that
+				make style feel personal.
+			</p>
 		</header>
-		<div class="page-content-grid" data-reveal>
-			<div class="editorial-copy">
-				<h2>Một góc nhìn, chưa phải một bản lý lịch.</h2>
+
+		<figure class="about-image editorial-image-frame" data-reveal>
+			<img
+				src={withBase(editorialImages[2].src)}
+				alt={editorialImages[2].alt}
+				data-image-mask
+				width="960"
+				height="1200"
+				fetchpriority="high"
+				decoding="async"
+			/>
+			<figcaption>Editorial reference / Unsplash. Not a portrait of the site owner.</figcaption>
+		</figure>
+
+		<section class="about-statement" data-reveal aria-labelledby="about-statement-title">
+			<p class="eyebrow">A NOTE ON THIS SPACE</p>
+			<div>
+				<h2 id="about-statement-title">An identity is not a template.</h2>
 				<p>
-					DARK TZY dành chỗ cho những điều chủ sở hữu thực sự muốn chia sẻ.
-					Thông tin cá nhân, kinh nghiệm và kỹ năng sẽ chỉ được thêm sau khi
-					được xác nhận.
+					This maison is personal by intention, but its owner has not yet
+					provided a biography, portrait, timeline, or social profiles for
+					publication. Those details are left open rather than invented.
 				</p>
-				<ul class="interest-list" aria-label="Các chủ đề quan tâm">
-					<li>Technology</li>
-					<li>Software</li>
-					<li>AI</li>
-					<li>Digital craft</li>
-				</ul>
 			</div>
-			<dl class="editorial-aside">
-				<div class="detail-row">
-					<dt>Profile</dt>
-					<dd><span class="placeholder">Chờ chủ sở hữu bổ sung</span></dd>
-				</div>
-				<div class="detail-row">
-					<dt>Skills</dt>
-					<dd><span class="placeholder">Chờ xác nhận</span></dd>
-				</div>
-				<div class="detail-row">
-					<dt>Focus</dt>
-					<dd>Learning in public</dd>
-				</div>
-			</dl>
-		</div>
-	</section>
+		</section>
+
+		<section class="about-principles" data-reveal aria-labelledby="principles-title">
+			<div>
+				<p class="eyebrow">THE CREATIVE PHILOSOPHY</p>
+				<h2 id="principles-title">Clarity.<br /><em>Character.</em><br />Intention.</h2>
+			</div>
+			<div class="principle-list">
+				<article>
+					<span>01</span>
+					<div><h3>Choose with feeling</h3><p>Personal style begins with what feels true, not what is prescribed.</p></div>
+				</article>
+				<article>
+					<span>02</span>
+					<div><h3>Notice the detail</h3><p>Shape, texture, and gesture can say more than a label ever could.</p></div>
+				</article>
+				<article>
+					<span>03</span>
+					<div><h3>Leave room to change</h3><p>Identity is lived, revised, and never finished.</p></div>
+				</article>
+			</div>
+		</section>
+
+		<section class="about-open-note" data-reveal>
+			<p class="eyebrow">THE JOURNAL IS OPEN</p>
+			<p>Stories, images, and personal notes will be added when they are ready to be shared.</p>
+			<a class="text-link" href={withBase("/posts/")}>Visit the journal <span aria-hidden="true">↗</span></a>
+		</section>
+	</article>
 </BaseLayout>

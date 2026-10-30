@@ -13,9 +13,12 @@ export const GET: APIRoute = async ({ site }) => {
 
 	const posts = await getCollection("posts", ({ data }) => !data.draft);
 	const projects = await getCollection("projects");
+	const fashionCollections = await getCollection("collections");
 	const routes = [
 		{ path: "", lastModified: undefined },
 		{ path: "about/", lastModified: undefined },
+		{ path: "collections/", lastModified: undefined },
+		{ path: "gallery/", lastModified: undefined },
 		{ path: "projects/", lastModified: undefined },
 		{ path: "posts/", lastModified: undefined },
 		{ path: "lab/", lastModified: undefined },
@@ -27,6 +30,10 @@ export const GET: APIRoute = async ({ site }) => {
 		...projects.map((project) => ({
 			path: `projects/${project.id}/`,
 			lastModified: project.data.pubDate,
+		})),
+		...fashionCollections.map((collection) => ({
+			path: `collections/${collection.id}/`,
+			lastModified: collection.data.date,
 		})),
 	];
 	const entries = routes.map(({ path, lastModified }) => {

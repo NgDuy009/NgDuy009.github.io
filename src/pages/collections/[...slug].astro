@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from "astro:content";
+import EditorialImage from "../../components/EditorialImage.astro";
+import GalleryLightbox from "../../components/GalleryLightbox.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatDate } from "../../lib/content";
+import { absoluteSiteUrl, withBase } from "../../lib/urls";
+
+export async function getStaticPaths() {
+	const collections = await getCollection("collections");
+	return collections.map((collection) => ({
+		params: { slug: collection.id },
+		props: { collection },
+	}));
+}
+
+const { collection } = Astro.props;
+const { Content } = await render(collection);
+const images = collection.data.images.length
+	? collection.data.images
+	: [{ src: collection.data.cover, alt: collection.data.coverAlt, caption: collection.data.title }];
+const canonicalUrl = Astro.site
+	? absoluteSiteUrl(`/collections/${collection.id}/`, Astro.site)
+	: undefined;
+---
+
+<BaseLayout
+	title={`${collection.data.title} — DARK TZY`}
+	description={collection.data.description}
+	canonicalUrl={canonicalUrl}
+	ogType="article"
+	ogImage={collection.data.cover}
+	ogImageAlt={collection.data.coverAlt}
+>
+	<article class="collection-detail">
+		<header class="collection-detail-heading" data-reveal>
+			<a class="text-link" href={withBase("/collections/")}>← All collections</a>
+			<p class="eyebrow">{collection.data.category} / COLLECTION NOTE</p>
+			<h1>{collection.data.title}</h1>
+			<p class="collection-detail-deck">{collection.data.description}</p>
+			{collection.data.date && <time datetime={collection.data.date.toISOString()}>{formatDate(collection.data.date)}</time>}
+		</header>
+		<div class="collection-story" data-reveal><Content /></div>
+		<div class="collection-detail-gallery" aria-label="Images in this collection">
+			{images.map((image, index) => (
+				<EditorialImage
+					image={{
+						...image,
+						caption: image.caption ?? collection.data.title,
+						orientation: index % 3 === 1 ? "landscape" : "portrait",
+						source: "Collection image",
+					}}
+					index={index}
+				/>
+			))}
+		</div>
+		<GalleryLightbox />
+		{collection.data.tags.length > 0 && (
+			<ul class="collection-tags" aria-label="Collection tags">
+				{collection.data.tags.map((tag) => <li>{tag}</li>)}
+			</ul>
+		)}
+	</article>
+</BaseLayout>

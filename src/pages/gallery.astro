@@ -1,0 +1,30 @@
+---
+import EditorialImage from "../components/EditorialImage.astro";
+import GalleryLightbox from "../components/GalleryLightbox.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { editorialImages } from "../lib/editorial";
+---
+
+<BaseLayout
+	title="Gallery — DARK TZY"
+	description="A curated visual moodboard of fashion, silhouettes, and details. Editorial references, not portraits of the site owner."
+>
+	<section class="gallery-page">
+		<header class="gallery-heading" data-reveal>
+			<div>
+				<p class="eyebrow">VISUAL CULTURE / AN OPEN MOODBOARD</p>
+				<h1>Looking,<br /><em>closely.</em></h1>
+			</div>
+			<p>
+				A visual index of fashion references and considered details.
+				These editorial images are moodboard material, not personal outfit
+				photographs or portraits of the site owner.
+			</p>
+		</header>
+		<div class="editorial-gallery" aria-label="Fashion editorial reference gallery">
+			{editorialImages.map((image, index) => <EditorialImage image={image} index={index} />)}
+		</div>
+		<p class="gallery-credit">Editorial reference imagery sourced from Unsplash. Image credits are listed in IMAGE_CREDITS.md.</p>
+		<GalleryLightbox />
+	</section>
+</BaseLayout>

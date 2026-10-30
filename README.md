@@ -1,6 +1,8 @@
 # DARK TZY
 
-A personal digital space for technology, projects, experiments, and writing.
+**The Art of Individuality.**
+
+A personal fashion maison for visual culture and a creative journal, built with Astro and deployed as a static site on GitHub Pages.
 
 ## Requirements
 
@@ -45,28 +47,55 @@ image is `public/og-image.png`.
 
 ## Content
 
-- Write posts in `src/content/posts/`; see [POSTING_GUIDE.md](./POSTING_GUIDE.md)
-  for frontmatter, Markdown, drafts, images, and publishing.
-- Add project entries in `src/content/projects/`.
-- Add experiments in `src/content/lab/`.
-- Collection fields and allowed values are validated in `src/content.config.ts`.
+- Write journal stories in `src/content/posts/`; see [POSTING_GUIDE.md](./POSTING_GUIDE.md).
+- Add owner-confirmed fashion collections in `src/content/collections/`.
+- Add retained project and experiment entries in `src/content/projects/` and `src/content/lab/`.
+- Schemas and allowed values are validated in `src/content.config.ts`.
 - Draft posts are excluded from public pages and the client-side search index.
+- Editorial reference images are self-hosted in `public/images/`; see [IMAGE_CREDITS.md](./IMAGE_CREDITS.md). They are not represented as photographs of the site owner.
+
+Collection entries are Markdown files named by slug (for example `src/content/collections/your-collection-slug.md`):
+
+```yaml
+---
+title: "Replace with an owner-approved title"
+description: "Replace with an owner-approved description."
+category: "Lookbook"
+cover: "/images/your-cover.webp"
+coverAlt: "Describe the supplied image."
+tags: []
+featured: false
+images:
+  - src: "/images/your-detail.webp"
+    alt: "Describe the supplied image."
+    caption: "Optional caption"
+---
+
+Optional Markdown story for the collection.
+```
+
+Allowed categories are `Lookbook`, `Style study`, `Accessories`, and `Visual notes`. Only publish outfit photos and personal details supplied or approved by the site owner.
 
 ## Project structure
 
 ```text
 public/
+  images/
 src/
   components/
   content/
+    collections/
     lab/
     posts/
     projects/
+  lib/
   layouts/
   pages/
+    collections/
+    gallery.astro
     posts/
     projects/
   styles/
 ```
 
-Personal profile and contact details remain placeholders until confirmed.
+Personal biography, outfit collections, contact details, and social links are not invented. The site only publishes those details after they are provided and confirmed.

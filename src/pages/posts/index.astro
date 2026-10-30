@@ -25,24 +25,23 @@ const searchIndexJson = JSON.stringify(searchIndex)
 ---
 
 <BaseLayout
-	title="Posts — DARK TZY"
-	description="Bài viết, ghi chú và hướng dẫn về công nghệ trên DARK TZY."
+	title="Journal — DARK TZY"
+	description="Fashion, visual culture, and personal notes from the DARK TZY journal."
 >
 	<section class="page-shell">
 		<header class="page-heading" data-reveal>
 			<div class="page-heading-main">
-				<p class="eyebrow">POSTS / FIELD NOTES</p>
-				<h1>Notes from<br />the process.</h1>
+				<p class="eyebrow">JOURNAL / IDEAS IN MOTION</p>
+				<h1>Notes on<br /><em>getting dressed.</em></h1>
 				<p class="page-heading-description">
-					Ghi chú, hướng dẫn và suy ngẫm về những điều đang học — viết bằng
-					Markdown, xuất bản có chủ đích.
+					Stories on fashion, personal style, and the visual culture around us.
 				</p>
 			</div>
-			<div class="page-index"><strong>{String(posts.length).padStart(2, "0")}</strong><span>Field notes</span><span>Published</span></div>
+			<div class="page-index"><strong>{String(posts.length).padStart(2, "0")}</strong><span>Stories</span><span>Published</span></div>
 		</header>
 		<div class="collection-bar">
-			<span>All entries</span>
-			<span>Markdown / <strong data-post-count>{posts.length}</strong></span>
+			<span>All stories</span>
+			<span>Journal / <strong data-post-count>{posts.length}</strong></span>
 		</div>
 
 		<div class="post-search" data-reveal>
@@ -51,13 +50,13 @@ const searchIndexJson = JSON.stringify(searchIndex)
 				id="post-search-input"
 				class="post-search-input"
 				type="search"
-				placeholder="Tìm tiêu đề, nội dung hoặc tag..."
+				placeholder="Search title, story, or tag..."
 				autocomplete="off"
 			/>
 			{tags.length > 0 && (
-				<div class="tag-filters" aria-label="Lọc bài viết theo tag">
+				<div class="tag-filters" aria-label="Filter stories by tag">
 					<button class="tag-filter is-active" type="button" data-tag-filter="all" aria-pressed="true">
-						Tất cả
+						All
 					</button>
 					{tags.map((tag) => (
 						<button class="tag-filter" type="button" data-tag-filter={tag} aria-pressed="false">
@@ -89,15 +88,15 @@ const searchIndexJson = JSON.stringify(searchIndex)
 				<div class="collection-empty">
 					<span class="collection-empty-index">VOL. 00</span>
 					<div>
-						<h2>Trang viết đang chờ dòng đầu tiên.</h2>
+						<h2>The journal is waiting for its first story.</h2>
 						<p>
-							Chưa có bài viết được xuất bản. Tạo một file Markdown trong
-							<code>src/content/posts/</code> để bắt đầu.
+							No stories have been published. Add an owner-approved Markdown
+							file in <code>src/content/posts/</code> to begin.
 						</p>
 					</div>
 				</div>
 			)}
-			<p class="search-empty" data-search-empty hidden>Không tìm thấy bài viết phù hợp.</p>
+			<p class="search-empty" data-search-empty hidden>No stories match this search.</p>
 			<p class="visually-hidden" data-search-status role="status" aria-live="polite"></p>
 		</div>
 	</section>
@@ -166,7 +165,7 @@ const searchIndexJson = JSON.stringify(searchIndex)
 
 				if (count) count.textContent = String(visibleCount);
 				if (emptyMessage) emptyMessage.hidden = visibleCount > 0;
-				if (status) status.textContent = `${visibleCount} bài viết`;
+				if (status) status.textContent = `${visibleCount} stories`;
 			};
 
 			searchInput.addEventListener("input", updateResults);

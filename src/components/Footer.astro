@@ -3,9 +3,27 @@ import { withBase } from "../lib/urls";
 ---
 
 <footer class="site-footer">
-	<div class="container footer-inner">
-		<a class="wordmark footer-wordmark" href={withBase("/")}>DARK <span>TZY</span></a>
-		<p>Designed with intent. Built for the web.</p>
+	<div class="footer-main">
+		<div>
+			<p class="eyebrow">PERSONAL FASHION · VISUAL CULTURE</p>
+			<a class="footer-manifesto" href={withBase("/")}>A little more<br /><em>like yourself.</em></a>
+		</div>
+		<div class="footer-nav">
+			<a href={withBase("/about/")}>About</a>
+			<a href={withBase("/collections/")}>Collections</a>
+			<a href={withBase("/posts/")}>Journal</a>
+			<a href={withBase("/gallery/")}>Gallery</a>
+			<a href={withBase("/contact/")}>Contact</a>
+		</div>
+		<div class="footer-archive">
+			<p class="eyebrow">THE ARCHIVE</p>
+			<a href={withBase("/projects/")}>Projects ↗</a>
+			<a href={withBase("/lab/")}>Lab ↗</a>
+		</div>
+	</div>
+	<div class="footer-bottom">
+		<a class="wordmark footer-wordmark" href={withBase("/")}>DARK TZY<span class="wordmark-period">.</span></a>
+		<p>The Art of Individuality.</p>
 		<p>© {new Date().getFullYear()} DARK TZY</p>
 	</div>
 </footer>

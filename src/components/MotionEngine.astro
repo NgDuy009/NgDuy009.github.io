@@ -40,6 +40,11 @@
 		let magneticTarget: HTMLElement | null = null;
 		let magneticX = 0;
 		let magneticY = 0;
+		const parallaxTarget = document.querySelector<HTMLElement>(".maison-hero-image");
+		let targetParallaxX = 0;
+		let targetParallaxY = 0;
+		let parallaxX = 0;
+		let parallaxY = 0;
 
 		const resetMagneticTarget = () => {
 			if (magneticTarget) {
@@ -66,6 +71,13 @@
 				magneticTarget.style.setProperty("--magnetic-y", `${magneticY}px`);
 			}
 
+			if (parallaxTarget) {
+				parallaxX += (targetParallaxX - parallaxX) * 0.08;
+				parallaxY += (targetParallaxY - parallaxY) * 0.08;
+				parallaxTarget.style.setProperty("--parallax-x", `${parallaxX}px`);
+				parallaxTarget.style.setProperty("--parallax-y", `${parallaxY}px`);
+			}
+
 			const pointerSettled =
 				Math.abs(pointerX - currentX) < 0.35 &&
 				Math.abs(pointerY - currentY) < 0.35;
@@ -73,8 +85,12 @@
 				!magneticTarget ||
 				(Math.abs(Number(magneticTarget.dataset.targetX ?? 0) - magneticX) < 0.2 &&
 					Math.abs(Number(magneticTarget.dataset.targetY ?? 0) - magneticY) < 0.2);
+			const parallaxSettled =
+				!parallaxTarget ||
+				(Math.abs(targetParallaxX - parallaxX) < 0.1 &&
+				Math.abs(targetParallaxY - parallaxY) < 0.1);
 
-			if (!pointerSettled || !magneticSettled) {
+			if (!pointerSettled || !magneticSettled || !parallaxSettled) {
 				frame = requestAnimationFrame(animatePointer);
 			} else {
 				frame = 0;
@@ -91,11 +107,26 @@
 			if (event.pointerType === "touch" || !finePointer.matches || reducedMotion.matches) {
 				glow.classList.remove("is-visible", "is-interactive");
 				resetMagneticTarget();
+				targetParallaxX = 0;
+				targetParallaxY = 0;
+				requestAnimation();
 				return;
 			}
 
 			pointerX = event.clientX;
 			pointerY = event.clientY;
+			const hero = event.target instanceof Element
+				? event.target.closest<HTMLElement>(".maison-hero")
+				: null;
+
+			if (hero) {
+				const bounds = hero.getBoundingClientRect();
+				targetParallaxX = Math.max(-6, Math.min(6, (event.clientX - (bounds.left + bounds.width / 2)) * 0.008));
+				targetParallaxY = Math.max(-6, Math.min(6, (event.clientY - (bounds.top + bounds.height / 2)) * 0.008));
+			} else {
+				targetParallaxX = 0;
+				targetParallaxY = 0;
+			}
 
 			if (!hasPointerPosition) {
 				currentX = pointerX;
@@ -139,6 +170,8 @@
 			if (event.relatedTarget === null) {
 				glow.classList.remove("is-visible", "is-interactive");
 				resetMagneticTarget();
+				targetParallaxX = 0;
+				targetParallaxY = 0;
 				requestAnimation();
 			}
 		};
@@ -148,6 +181,9 @@
 		window.addEventListener("blur", () => {
 			glow.classList.remove("is-visible", "is-interactive");
 			resetMagneticTarget();
+			targetParallaxX = 0;
+			targetParallaxY = 0;
+			requestAnimation();
 		});
 	}
 </script>

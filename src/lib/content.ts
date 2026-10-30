@@ -9,11 +9,11 @@ export function calculateReadingTime(markdown: string): string {
 	const words = readableText.match(/[\p{L}\p{N}]+(?:['’-][\p{L}\p{N}]+)*/gu)?.length ?? 0;
 	const minutes = Math.max(1, Math.ceil(words / 220));
 
-	return `${minutes} phút đọc`;
+	return `${minutes} min read`;
 }
 
 export function formatDate(date: Date): string {
-	return new Intl.DateTimeFormat("vi-VN", {
+	return new Intl.DateTimeFormat("en", {
 		day: "numeric",
 		month: "short",
 		year: "numeric",

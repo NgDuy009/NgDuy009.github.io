@@ -2,27 +2,26 @@
 	color-scheme: dark;
 
 	--bg: #080808;
-	--bg-elevated: #101010;
-	--surface: #151515;
-	--surface-hover: #1c1c1c;
-
-	--text: #f4f4f4;
-	--text-muted: #a1a1a1;
-	--text-subtle: #858585;
-
-	--border: rgb(255 255 255 / 12%);
-	--border-strong: rgb(255 255 255 / 22%);
+	--bg-elevated: #11100e;
+	--surface: #191815;
+	--surface-hover: #24221e;
+	--ivory: #f3f0e9;
+	--text: #f3f0e9;
+	--text-muted: #c2beb6;
+	--text-subtle: #a39f97;
+	--ink: #171613;
+	--ink-muted: #635f59;
+	--border: rgb(243 240 233 / 15%);
+	--border-strong: rgb(243 240 233 / 28%);
 	--neon: #c8ff3d;
 	--neon-soft: rgb(200 255 61 / 9%);
-
-	--font-display: "Space Grotesk Variable", "Space Grotesk", sans-serif;
+	--font-display: "Cormorant Garamond Variable", "Times New Roman", serif;
 	--font-body: "Inter Variable", Inter, "Segoe UI", sans-serif;
-	--font-mono: "JetBrains Mono", "Cascadia Code", monospace;
-
-	--content-width: 1160px;
-	--nav-height: 76px;
-	--radius-sm: 5px;
-	--radius-md: 10px;
-	--radius-lg: 16px;
-	--ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+	--font-mono: "Inter Variable", Inter, sans-serif;
+	--content-width: 1320px;
+	--nav-height: 88px;
+	--radius-sm: 0;
+	--radius-md: 0;
+	--radius-lg: 0;
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }

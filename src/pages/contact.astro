@@ -1,44 +1,31 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/urls";
 ---
 
 <BaseLayout
 	title="Contact — DARK TZY"
-	description="Thông tin liên hệ của DARK TZY."
+	description="Contact DARK TZY for conversations and creative enquiries."
 >
-	<section class="page-shell">
-		<header class="page-heading" data-reveal>
-			<div class="page-heading-main">
-				<p class="eyebrow">CONTACT / OPEN CHANNEL</p>
-				<h1>Good work<br />starts here.</h1>
-				<p class="page-heading-description">
-					Kết nối cho một cuộc trò chuyện, ý tưởng hợp tác hoặc đơn giản là trao
-					đổi về công nghệ.
-				</p>
-			</div>
-			<div class="page-index"><strong>06</strong><span>Contact</span><span>Direct links</span></div>
+	<section class="contact-page">
+		<header class="contact-heading" data-reveal>
+			<p class="eyebrow">CONTACT / A NOTE, WHEN IT'S READY</p>
+			<h1>Make room<br />for <em>good things.</em></h1>
+			<p>
+				A genuine connection starts with a real channel. Verified email and
+				social links have not been supplied for publication yet.
+			</p>
 		</header>
-		<div class="contact-layout" data-reveal>
+		<div class="contact-note" data-reveal>
+			<span class="contact-note-mark" aria-hidden="true">✳</span>
 			<div>
-				<p class="contact-statement">Mở ra một kênh kết nối có ý nghĩa.</p>
-				<p class="contact-note">
-					Địa chỉ email và hồ sơ xã hội sẽ xuất hiện sau khi được chủ sở hữu
-					xác nhận. Không có biểu mẫu giả lập gửi tin nhắn.
+				<p class="eyebrow">NO PLACEHOLDER FORM</p>
+				<h2>When there's a way to reach out, it will be here.</h2>
+				<p>
+					This page will only list contact details after they are confirmed.
+					There is no simulated message form or unmonitored inbox.
 				</p>
-			</div>
-			<div class="contact-details">
-				<div class="contact-channel">
-					<span>Email</span>
-					<span class="placeholder">Chưa được cung cấp</span>
-				</div>
-				<div class="contact-channel">
-					<span>GitHub</span>
-					<span class="placeholder">Chưa được cung cấp</span>
-				</div>
-				<div class="contact-channel">
-					<span>Response</span>
-					<span>Direct links only</span>
-				</div>
+				<a class="text-link" href={withBase("/about/")}>A little about this space <span aria-hidden="true">↗</span></a>
 			</div>
 		</div>
 	</section>

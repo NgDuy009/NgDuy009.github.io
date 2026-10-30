@@ -1,0 +1,27 @@
+---
+import { withBase } from "../lib/urls";
+
+interface Props {
+	title: string;
+	description: string;
+	category: string;
+	cover: string;
+	coverAlt: string;
+	href: string;
+	index: number;
+}
+
+const { title, description, category, cover, coverAlt, href, index } = Astro.props;
+---
+
+<article class:list={["collection-card", { "collection-card-offset": index % 3 === 1 }]}>
+	<a class="collection-card-image" href={withBase(href)} aria-label={`View ${title}`}>
+		<img src={withBase(cover)} alt={coverAlt} width="960" height="1200" loading="lazy" decoding="async" />
+		<span class="collection-card-index">{String(index + 1).padStart(2, "0")}</span>
+	</a>
+	<div class="collection-card-copy">
+		<p class="collection-card-category">{category}</p>
+		<h2><a href={withBase(href)}>{title}</a></h2>
+		<p>{description}</p>
+	</div>
+</article>

@@ -33,6 +33,25 @@ const projects = defineCollection({
 	}),
 });
 
+const fashionCollections = defineCollection({
+	loader: glob({ base: "./src/content/collections", pattern: "**/*.md" }),
+	schema: z.object({
+		title: z.string().trim().min(1),
+		description: z.string().trim().min(1),
+		category: z.enum(["Lookbook", "Style study", "Accessories", "Visual notes"]),
+		cover: z.string().trim().min(1),
+		coverAlt: z.string().trim().min(1),
+		date: z.date().optional(),
+		tags: z.array(z.string()).default([]),
+		featured: z.boolean().default(false),
+		images: z.array(z.object({
+			src: z.string().trim().min(1),
+			alt: z.string().trim().min(1),
+			caption: z.string().optional(),
+		})).default([]),
+	}),
+});
+
 const lab = defineCollection({
 	loader: glob({ base: "./src/content/lab", pattern: "**/*.md" }),
 	schema: z.object({
@@ -46,4 +65,4 @@ const lab = defineCollection({
 	}),
 });
 
-export const collections = { posts, projects, lab };
+export const collections = { posts, projects, collections: fashionCollections, lab };

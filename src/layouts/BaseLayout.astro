@@ -39,26 +39,19 @@ const canonical = !noIndex
 const resolvedOgImage = Astro.site
 	? absoluteSiteUrl(ogImage ?? "/og-image.png", Astro.site)
 	: undefined;
-const resolvedOgImageAlt = ogImageAlt ?? (ogImage ? description : "DARK TZY — Personal Digital Space");
+const resolvedOgImageAlt = ogImageAlt ?? (ogImage ? description : "DARK TZY — The Art of Individuality");
 const homeUrl = Astro.site ? absoluteSiteUrl("/", Astro.site) : undefined;
-const personId = homeUrl ? `${homeUrl}#person` : undefined;
 const structuredData = Astro.site
 	? {
 			"@context": "https://schema.org",
 			"@graph": [
 				{
-					"@type": "Person",
-					"@id": personId,
-					name: "DARK TZY",
-					url: homeUrl,
-				},
-				{
 					"@type": "WebSite",
 					name: "DARK TZY",
 					description,
 					url: homeUrl,
-					inLanguage: "vi",
-					publisher: { "@id": personId },
+					inLanguage: "en",
+					publisher: { "@type": "Organization", name: "DARK TZY", url: homeUrl },
 				},
 				...(publishedTime && canonical
 					? [{
@@ -68,7 +61,7 @@ const structuredData = Astro.site
 							datePublished: publishedTime.toISOString(),
 							dateModified: (updatedTime ?? publishedTime).toISOString(),
 							mainEntityOfPage: canonical,
-							author: { "@id": personId },
+							author: { "@type": "Organization", name: "DARK TZY" },
 							image: resolvedOgImage,
 						}]
 					: []),
@@ -81,7 +74,7 @@ const structuredDataJson = structuredData
 ---
 
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -90,7 +83,7 @@ const structuredDataJson = structuredData
 		<meta name="theme-color" content="#080808" />
 		{noIndex && <meta name="robots" content="noindex,follow" />}
 		<meta property="og:type" content={ogType} />
-		<meta property="og:locale" content="vi_VN" />
+		<meta property="og:locale" content="en_US" />
 		<meta property="og:site_name" content="DARK TZY" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -112,17 +105,14 @@ const structuredDataJson = structuredData
 			<meta property="article:modified_time" content={updatedTime.toISOString()} />
 		)}
 		<link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
-		<link rel="icon" href={withBase("/favicon.ico")} sizes="any" />
 		{structuredDataJson && <script type="application/ld+json" set:html={structuredDataJson} />}
 		<title>{title}</title>
 	</head>
 	<body>
-		<a class="skip-link" href="#main-content">Bỏ qua điều hướng</a>
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<Navbar />
 		<main id="main-content" class="site-main">
-			<div class="container">
-				<slot />
-			</div>
+			<slot />
 		</main>
 		<Footer />
 		<MotionEngine />

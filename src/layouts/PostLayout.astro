@@ -59,16 +59,14 @@ const {
 >
 	<article class="article-shell">
 		<header class="article-header" data-reveal>
-			<a class="article-back-link" href={withBase("/posts/")}>← Tất cả bài viết</a>
-			<p class="eyebrow article-kicker">
-				{category ?? "FIELD NOTES"} / {formatDate(pubDate)}
-			</p>
+			<a class="article-back-link" href={withBase("/posts/")}>← All journal entries</a>
+			<p class="eyebrow article-kicker">{category ?? "JOURNAL"} / {formatDate(pubDate)}</p>
 			<h1>{title}</h1>
 			<p class="article-description">{description}</p>
 			<div class="article-meta">
 				<span>{readingTime}</span>
 				{updatedDate && updatedDate.getTime() !== pubDate.getTime() && (
-					<span>Cập nhật {formatDate(updatedDate)}</span>
+					<span>Updated {formatDate(updatedDate)}</span>
 				)}
 			</div>
 			{tags.length > 0 && (
@@ -92,7 +90,7 @@ const {
 		)}
 
 		<div class="article-layout">
-			<aside class="article-toc" aria-label="Mục lục" data-reveal>
+			<aside class="article-toc" aria-label="On this page" data-reveal>
 				<p class="article-toc-title">ON THIS PAGE</p>
 				{headings.length > 0 ? (
 					<nav>
@@ -105,7 +103,7 @@ const {
 						</ul>
 					</nav>
 				) : (
-					<p class="article-toc-empty">Bài viết không có tiêu đề mục lục.</p>
+					<p class="article-toc-empty">No headings in this story.</p>
 				)}
 			</aside>
 
@@ -114,16 +112,16 @@ const {
 			</div>
 		</div>
 
-		<nav class="article-pagination" aria-label="Điều hướng bài viết">
+		<nav class="article-pagination" aria-label="Journal navigation">
 			{previousPost ? (
 				<a class="article-pagination-link" href={withBase(previousPost.href)}>
-					<span>← BÀI CŨ HƠN</span>
+					<span>← OLDER STORY</span>
 					<strong>{previousPost.title}</strong>
 				</a>
 			) : <span />}
 			{nextPost && (
 				<a class="article-pagination-link article-pagination-next" href={withBase(nextPost.href)}>
-					<span>BÀI MỚI HƠN →</span>
+					<span>NEWER STORY →</span>
 					<strong>{nextPost.title}</strong>
 				</a>
 			)}
